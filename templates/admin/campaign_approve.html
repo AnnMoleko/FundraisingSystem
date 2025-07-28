@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Approve Campaign - Admin - EduFund{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-4">Approve Campaign</h1>
+            
+            <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">
+                <p class="font-bold">Confirmation:</p>
+                <p>You are about to approve the campaign "{{ campaign.title }}" created by {{ campaign.student.full_name|default:campaign.student.username }}.</p>
+            </div>
+            
+            <div class="mb-6">
+                <h2 class="text-lg font-medium mb-2">Campaign Details:</h2>
+                <dl class="space-y-1">
+                    <dt class="text-sm font-medium text-gray-500">Title:</dt>
+                    <dd class="text-sm text-gray-900 mb-2">{{ campaign.title }}</dd>
+                    
+                    <dt class="text-sm font-medium text-gray-500">Goal:</dt>
+                    <dd class="text-sm text-gray-900 mb-2">${{ campaign.goal }}</dd>
+                    
+                    <dt class="text-sm font-medium text-gray-500">Description:</dt>
+                    <dd class="text-sm text-gray-900">{{ campaign.description|truncatewords:50 }}</dd>
+                </dl>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="flex items-center justify-end space-x-3">
+                    <a href="{% url 'admin_campaigns_list' %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        Approve Campaign
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Profile - EduFund{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center space-x-5">
+                <div class="flex-shrink-0">
+                    <img class="h-20 w-20 rounded-full" src="{% static 'images/default-avatar.png' %}" alt="{{ user.full_name }}">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h1 class="text-2xl font-bold text-gray-900">{{ user.full_name|default:user.username }}</h1>
+                    <p class="text-sm font-medium text-gray-500 capitalize">{{ user.role }}</p>
+                    <p class="text-sm text-gray-500">{{ user.email }}</p>
+                </div>
+                <div>
+                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Details -->
+    <div class="mt-8 bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Profile Information</h3>
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Full Name</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.full_name|default:"Not provided" }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Username</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.username }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.email }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Role</dt>
+                    <dd class="mt-1 text-sm text-gray-900 capitalize">{{ user.role }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Member Since</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.date_joined|date:"F d, Y" }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Last Login</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.last_login|date:"F d, Y g:i A"|default:"Never" }}</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock %}

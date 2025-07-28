@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Campaigns - Admin - EduFund{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8 flex justify-between items-center">
+        <h1 class="text-3xl font-bold">Manage Campaigns</h1>
+        <a href="{% url 'admin_dashboard' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Back to Dashboard
+        </a>
+    </div>
+    
+    <div class="mb-6 border-b border-gray-200">
+        <nav class="flex -mb-px space-x-8">
+            <a href="{% url 'admin_campaigns_list' %}?status=pending" 
+               class="{% if filter_status == 'pending' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                Pending Approval
+            </a>
+            <a href="{% url 'admin_campaigns_list' %}?status=approved" 
+               class="{% if filter_status == 'approved' %}border-blue-500 text-blue-600{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm">
+                Approved Campaigns
+            </a>
+        </nav>
+    </div>
+    
+    {% if campaigns %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for campaign in campaigns %}
+                <div class="bg-white shadow rounded-lg overflow-hidden">
+                    <div class="p-6">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ campaign.title }}</h2>
+                        <p class="text-sm text-gray-500 mb-4">
+                            By {{ campaign.student.full_name|default:campaign.student.username }} 
+                            on {{ campaign.created_at|date:"F d, Y" }}
+                        </p>
+                        <p class="text-gray-600 mb-4 line-clamp-3">{{ campaign.description }}</p>
+                        
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-500">Goal: ${{ campaign.goal }}</p>
+                        </div>
+                        
+                        <div class="flex space-x-2">
+                            <a href="{% url 'campaign_detail' campaign.id %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded text-sm">
+                                View Details
+                            </a>
+                            
+                            {% if not campaign.approved %}
+                                <a href="{% url 'admin_campaign_approve' campaign.id %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
+                                    Approve
+                                </a>
+                                <a href="{% url 'admin_campaign_reject' campaign.id %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm">
+                                    Reject
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-white p-6 rounded-lg shadow text-center">
+            {% if filter_status == 'pending' %}
+                <h3 class="text-xl font-medium mb-2">No pending campaigns</h3>
+                <p class="text-gray-600">All campaigns have been reviewed.</p>
+            {% else %}
+                <h3 class="text-xl font-medium mb-2">No approved campaigns</h3>
+                <p class="text-gray-600">There are no approved campaigns at the moment.</p>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

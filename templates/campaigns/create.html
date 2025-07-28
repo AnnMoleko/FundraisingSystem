@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Create Campaign - EduFund{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-6">Create a New Campaign</h1>
+            
+            <form method="post" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                        <p class="font-bold">Please correct the following errors:</p>
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+                
+                <div>
+                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        Campaign Title*
+                    </label>
+                    {{ form.title }}
+                    <p class="text-xs text-gray-500 mt-1">Choose a clear, descriptive title for your fundraising campaign.</p>
+                </div>
+                
+                <div>
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        Description*
+                    </label>
+                    {{ form.description }}
+                    <p class="text-xs text-gray-500 mt-1">
+                        Explain your educational goals, why you need funding, and how the funds will be used.
+                    </p>
+                </div>
+                
+                <div>
+                    <label for="{{ form.goal.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        Funding Goal ($)*
+                    </label>
+                    {{ form.goal }}
+                    <p class="text-xs text-gray-500 mt-1">Set a realistic funding goal based on your actual needs.</p>
+                </div>
+                
+                <div>
+                    <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        Campaign Image
+                    </label>
+                    {{ form.image }}
+                    <p class="text-xs text-gray-500 mt-1">
+                        Upload an image that represents your campaign. This will be displayed on the campaign page.
+                    </p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-md">
+                    <p class="text-sm text-gray-600">
+                        <strong>Note:</strong> All campaigns require admin approval before they become visible to potential donors. 
+                        You will be notified once your campaign is approved.
+                    </p>
+                </div>
+                
+                <div class="flex items-center justify-end space-x-3">
+                    <a href="{% url 'student_dashboard' %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Create Campaign
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

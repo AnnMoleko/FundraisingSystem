@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Make a Donation - EduFund{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Make a Donation</h1>
+            <p class="text-gray-600 mb-6">You are supporting: <strong>{{ campaign.title }}</strong></p>
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+                        <p class="font-bold">Please correct the following errors:</p>
+                        {{ form.errors }}
+                    </div>
+                {% endif %}
+                
+                <div>
+                    <label for="{{ form.amount.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        Donation Amount ($)*
+                    </label>
+                    {{ form.amount }}
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method*</label>
+                    <div class="space-y-2">
+                        {% for radio in form.payment_method %}
+                            <div class="flex items-center border border-gray-200 rounded-md p-3 hover:bg-gray-50">
+                                {{ radio }}
+                                <label for="{{ radio.id_for_label }}" class="ml-3 flex flex-grow cursor-pointer">
+                                    <span>{{ radio.choice_label }}</span>
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    {{ form.anonymous }}
+                    <label for="{{ form.anonymous.id_for_label }}" class="ml-3 block text-sm cursor-pointer">
+                        Make this donation anonymous
+                        <p class="text-xs text-gray-500">Your name will not be displayed publicly.</p>
+                    </label>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-md">
+                    <p class="text-sm text-blue-700">
+                        <strong>100% of your donation</strong> goes directly to supporting this student's education.
+                    </p>
+                </div>
+                
+                <div class="flex items-center justify-end space-x-3">
+                    <a href="{% url 'campaign_detail' campaign.id %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Continue to Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
