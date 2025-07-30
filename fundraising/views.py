@@ -78,8 +78,15 @@ def campaign_create(request):
             campaign = form.save(commit=False)
             campaign.student = request.user
             campaign.save()
-            messages.success(request, "Your campaign has been submitted for approval.")
+            
+            messages.success(
+                request, 
+                f"🎉 Your campaign '{campaign.title}' has been created successfully! "
+                "It's now pending admin approval and will be visible to donors once approved."
+            )
             return redirect('student_dashboard')
+        else:
+            messages.error(request, "Please correct the errors below and try again.")
     else:
         form = CampaignForm()
     
@@ -165,7 +172,7 @@ def admin_campaign_approve(request, pk):
         campaign.approved = True
         campaign.save()
         messages.success(request, f"Campaign '{campaign.title}' has been approved.")
-        return redirect('admin_campaigns_list')
+        return redirect('campaigns_list')
     
     return render(request, 'admin/campaign_approve.html', {'campaign': campaign})
 
@@ -177,7 +184,7 @@ def admin_campaign_reject(request, pk):
     if request.method == 'POST':
         campaign.delete()
         messages.success(request, f"Campaign '{campaign.title}' has been rejected and deleted.")
-        return redirect('admin_campaigns_list')
+        return redirect('campaigns_list')
     
     return render(request, 'admin/campaign_reject.html', {'campaign': campaign})
 
@@ -188,14 +195,26 @@ def student_dashboard(request):
     # Get all campaigns created by the student
     campaigns = Campaign.objects.filter(student=request.user).order_by('-created_at')
     
-    # Calculate some stats
-    approved_campaigns = campaigns.filter(approved=True).count()
+    # Calculate detailed stats
+    approved_campaigns = campaigns.filter(approved=True)
+    pending_campaigns = campaigns.filter(approved=False)
     total_raised = campaigns.aggregate(Sum('current_amount'))['current_amount__sum'] or 0
+    total_goal = campaigns.aggregate(Sum('goal'))['goal__sum'] or 0
+    
+    # Calculate total supporters (unique donors across all campaigns)
+    total_supporters = Donation.objects.filter(
+        campaign__in=campaigns,
+        status='completed'
+    ).values('donor').distinct().count()
     
     context = {
         'campaigns': campaigns,
-        'approved_campaigns': approved_campaigns,
+        'approved_campaigns_count': approved_campaigns.count(),
+        'pending_campaigns_count': pending_campaigns.count(),
         'total_raised': total_raised,
+        'total_goal': total_goal,
+        'total_supporters': total_supporters,
+        'has_campaigns': campaigns.exists(),
     }
     return render(request, 'dashboards/student.html', context)
 
@@ -287,4 +306,3 @@ def custom_500(request):
 
 def custom_403(request, exception):
     return render(request, 'errors/403.html', status=403)
-

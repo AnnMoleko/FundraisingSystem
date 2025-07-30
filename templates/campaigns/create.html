@@ -7,7 +7,18 @@
 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <div class="p-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Create a New Campaign</h1>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Your Campaign</h1>
+            <p class="text-gray-600 mb-6">Tell your story and start raising funds for your educational goals</p>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <h3 class="text-sm font-medium text-blue-900 mb-2">💡 Tips for a successful campaign:</h3>
+                <ul class="text-sm text-blue-700 space-y-1">
+                    <li>• Write a compelling title that clearly states your goal</li>
+                    <li>• Tell your personal story and explain why you need funding</li>
+                    <li>• Set a realistic funding goal based on your actual needs</li>
+                    <li>• Add a photo that represents you or your educational journey</li>
+                </ul>
+            </div>
             
             <form method="post" enctype="multipart/form-data" class="space-y-6">
                 {% csrf_token %}
@@ -62,11 +73,11 @@
                     </p>
                 </div>
                 
-                <div class="flex items-center justify-end space-x-3">
-                    <a href="{% url 'student_dashboard' %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <div class="flex items-center justify-between space-x-3 pt-6 border-t">
+                    <a href="{% url 'student_dashboard' %}" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
                         Cancel
                     </a>
-                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="submit" class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
                         Create Campaign
                     </button>
                 </div>
