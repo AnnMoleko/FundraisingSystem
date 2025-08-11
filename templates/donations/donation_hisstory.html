@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Donations - EduFund{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">My Donation History</h1>
+        <p class="mt-2 text-gray-600">Track your contributions and see the impact you've made</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-dollar-sign text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Donated</dt>
+                            <dd class="text-lg font-medium text-gray-900">${{ total_donated|floatformat:2 }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Students Helped</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ campaigns_supported }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-heart text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Total Donations</dt>
+                            <dd class="text-lg font-medium text-gray-900">{{ total_donations }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div class="p-5">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
+                            <i class="fas fa-chart-line text-white"></i>
+                        </div>
+                    </div>
+                    <div class="ml-5 w-0 flex-1">
+                        <dl>
+                            <dt class="text-sm font-medium text-gray-500 truncate">Avg. Donation</dt>
+                            <dd class="text-lg font-medium text-gray-900">${{ average_donation|floatformat:2 }}</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white shadow rounded-lg mb-8">
+        <div class="p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Filter Donations</h3>
+            <form method="get" class="grid grid-cols-1 md:grid-cols-6 gap-4">
+                <div>
+                    {{ search_form.search }}
+                </div>
+                <div>
+                    {{ search_form.status }}
+                </div>
+                <div>
+                    {{ search_form.payment_method }}
+                </div>
+                <div>
+                    {{ search_form.min_amount }}
+                </div>
+                <div>
+                    {{ search_form.max_amount }}
+                </div>
+                <div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Donations List -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900">Your Donations</h3>
+        </div>
+        
+        {% if donations %}
+            <div class="divide-y divide-gray-200">
+                {% for donation in donations %}
+                <div class="p-6 hover:bg-gray-50 transition duration-150">
+                    <div class="flex items-center justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-4">
+                                <!-- Status Badge -->
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                    {% if donation.status == 'completed' %}bg-green-100 text-green-800
+                                    {% elif donation.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                    {% elif donation.status == 'failed' %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ donation.get_status_display }}
+                                </span>
+                                
+                                <!-- Amount -->
+                                <span class="text-lg font-bold text-gray-900">${{ donation.amount }}</span>
+                                
+                                <!-- Payment Method -->
+                                <span class="text-sm text-gray-500">
+                                    via {{ donation.get_payment_method_display }}
+                                </span>
+                            </div>
+                            
+                            <!-- Campaign Info -->
+                            <div class="mt-2">
+                                <h4 class="text-lg font-medium text-gray-900">
+                                    <a href="{% url 'campaign_detail' donation.campaign.id %}" class="hover:text-blue-600">
+                                        {{ donation.campaign.title }}
+                                    </a>
+                                </h4>
+                                <p class="text-sm text-gray-600">
+                                    Supporting {{ donation.campaign.student.full_name|default:donation.campaign.student.username }}
+                                </p>
+                            </div>
+                            
+                            <!-- Message -->
+                            {% if donation.message %}
+                            <div class="mt-2">
+                                <p class="text-sm text-gray-700 italic">"{{ donation.message }}"</p>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Date and Details -->
+                            <div class="mt-3 flex items-center space-x-4 text-sm text-gray-500">
+                                <span>
+                                    <i class="far fa-calendar mr-1"></i>
+                                    {{ donation.created_at|date:"M d, Y" }}
+                                </span>
+                                
+                                {% if donation.is_recurring %}
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                                    <i class="fas fa-sync-alt mr-1"></i>
+                                    Recurring {{ donation.recurring_frequency }}
+                                </span>
+                                {% endif %}
+                                
+                                {% if donation.anonymous %}
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800">
+                                    <i class="fas fa-user-secret mr-1"></i>
+                                    Anonymous
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="flex items-center space-x-2">
+                            {% if donation.receipt %}
+                            <a href="{% url 'download_receipt' donation.id %}" 
+                               class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <i class="fas fa-download mr-1"></i>Receipt
+                            </a>
+                            {% endif %}
+                            
+                            {% if donation.status == 'completed' and donation.can_be_refunded %}
+                            <button onclick="requestRefund('{{ donation.id }}')" 
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                <i class="fas fa-undo mr-1"></i>Request Refund
+                            </button>
+                            {% endif %}
+                            
+                            <a href="{% url 'campaign_detail' donation.campaign.id %}" 
+                               class="text-gray-600 hover:text-gray-800 text-sm font-medium">
+                                <i class="fas fa-external-link-alt mr-1"></i>View Campaign
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Pagination -->
+            {% if is_paginated %}
+            <div class="px-6 py-4 border-t border-gray-200">
+                <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-700">
+                        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ paginator.count }} donations
+                    </div>
+                    <div class="flex space-x-2">
+                        {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}" 
+                           class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Previous
+                        </a>
+                        {% endif %}
+                        
+                        {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}" 
+                           class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Next
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            
+        {% else %}
+            <div class="p-12 text-center">
+                <i class="fas fa-heart text-gray-400 text-4xl mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">No donations yet</h3>
+                <p class="text-gray-600 mb-6">Start making a difference by supporting student campaigns</p>
+                <a href="{% url 'campaigns_list' %}" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Browse Campaigns
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Refund Request Modal -->
+<div id="refundModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Request Refund</h3>
+                <form id="refundForm" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="refundDonationId" name="donation_id">
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Reason for refund request
+                        </label>
+                        <textarea name="reason" rows="3" required
+                                  class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                  placeholder="Please explain why you're requesting a refund..."></textarea>
+                    </div>
+                    
+                    <div class="flex justify-end space-x-3">
+                        <button type="button" onclick="closeRefundModal()" 
+                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md">
+                            Request Refund
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function requestRefund(donationId) {
+    document.getElementById('refundDonationId').value = donationId;
+    document.getElementById('refundModal').classList.remove('hidden');
+}
+
+function closeRefundModal() {
+    document.getElementById('refundModal').classList.add('hidden');
+}
+
+// Handle refund form submission
+document.getElementById('refundForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('{% url "request_refund" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Refund request submitted successfully. We will review your request and get back to you within 3-5 business days.');
+            location.reload();
+        } else {
+            alert('Error submitting refund request: ' + data.error);
+        }
+    })
+    .catch(error => {
+        alert('Error submitting refund request. Please try again.');
+    });
+    
+    closeRefundModal();
+});
+</script>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 from django.http import HttpResponseForbidden
-from django.db.models import Sum, Count, Q
+from django.db.models import Sum, Count, Q, F
 from .models import Campaign, Donation
 from authentication.models import User
 from .forms import CampaignForm, DonationForm
@@ -172,7 +172,7 @@ def admin_campaign_approve(request, pk):
         campaign.approved = True
         campaign.save()
         messages.success(request, f"Campaign '{campaign.title}' has been approved.")
-        return redirect('campaigns_list')
+        return redirect('admin_campaigns_list')
     
     return render(request, 'admin/campaign_approve.html', {'campaign': campaign})
 
@@ -184,7 +184,7 @@ def admin_campaign_reject(request, pk):
     if request.method == 'POST':
         campaign.delete()
         messages.success(request, f"Campaign '{campaign.title}' has been rejected and deleted.")
-        return redirect('campaigns_list')
+        return redirect('admin_campaigns_list')
     
     return render(request, 'admin/campaign_reject.html', {'campaign': campaign})
 
@@ -224,24 +224,46 @@ def student_dashboard(request):
 def donor_dashboard(request):
     # Get all donations made by the donor
     donations = Donation.objects.filter(donor=request.user).order_by('-created_at')
+    completed_donations = donations.filter(status='completed')
     
-    # Calculate some stats
-    total_donated = donations.filter(status='completed').aggregate(Sum('amount'))['amount__sum'] or 0
-    campaigns_supported = donations.filter(status='completed').values('campaign').distinct().count()
+    # Calculate comprehensive stats
+    total_donated = completed_donations.aggregate(Sum('amount'))['amount__sum'] or 0
+    campaigns_supported = completed_donations.values('campaign').distinct().count()
     
-    # Get recommended campaigns (just get most recent approved ones that the donor hasn't donated to)
+    # Calculate students helped (unique students from campaigns donated to)
+    students_helped = completed_donations.values('campaign__student').distinct().count()
+    
+    # Calculate impact score (percentage of campaigns that reached their goal after donation)
+    campaigns_with_donations = completed_donations.values_list('campaign', flat=True).distinct()
+    successful_campaigns = Campaign.objects.filter(
+        id__in=campaigns_with_donations,
+        current_amount__gte=F('goal')
+    ).count()
+    impact_score = int((successful_campaigns / campaigns_supported * 100)) if campaigns_supported > 0 else 0
+    
+    # Get recent donations (last 5 completed donations)
+    recent_donations = completed_donations.select_related('campaign', 'campaign__student')[:5]
+    
+    # Get recommended campaigns (approved campaigns the donor hasn't donated to)
     donated_campaign_ids = donations.values_list('campaign', flat=True)
-    recommended_campaigns = Campaign.objects.filter(approved=True).exclude(id__in=donated_campaign_ids).order_by('-created_at')[:3]
+    recommended_campaigns = Campaign.objects.filter(
+        approved=True
+    ).exclude(
+        id__in=donated_campaign_ids
+    ).select_related('student').order_by('-created_at')[:6]
     
     context = {
         'donations': donations,
+        'recent_donations': recent_donations,
         'total_donated': total_donated,
         'campaigns_supported': campaigns_supported,
+        'students_helped': students_helped,
+        'impact_score': impact_score,
         'recommended_campaigns': recommended_campaigns,
+        'has_donations': completed_donations.exists(),
     }
     return render(request, 'dashboards/donor.html', context)
 
-# Donation Views
 @login_required
 @donor_required
 def make_donation(request, campaign_id):

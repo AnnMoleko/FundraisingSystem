@@ -55,19 +55,248 @@ class CampaignForm(forms.ModelForm):
         return description
 
 class DonationForm(forms.ModelForm):
+    # Predefined donation amounts for quick selection
+    QUICK_AMOUNTS = [
+        (25, '$25'),
+        (50, '$50'),
+        (100, '$100'),
+        (250, '$250'),
+        (500, '$500'),
+    ]
+    
+    # Enhanced payment method choices with descriptions
+    PAYMENT_METHODS = [
+        ('paypal', 'PayPal - Secure online payment'),
+        ('stripe', 'Credit/Debit Card - Visa, MasterCard, etc.'),
+        ('mobile_money', 'Mobile Money - M-Pesa, Airtel Money, etc.'),
+        ('bank_transfer', 'Bank Transfer - Direct bank transfer'),
+        ('crypto', 'Cryptocurrency - Bitcoin, Ethereum'),
+    ]
+    
+    # Custom amount field with better validation
+    amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        min_value=1,
+        widget=forms.NumberInput(attrs={
+            'class': 'w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg',
+            'placeholder': '0.00',
+            'step': '0.01',
+            'min': '1'
+        }),
+        help_text="Minimum donation amount is $1"
+    )
+    
+    # Payment method with radio buttons
     payment_method = forms.ChoiceField(
-        choices=[
-            ('paypal', 'PayPal'),
-            ('mobile_money', 'Mobile Money'),
-            ('bank_transfer', 'Bank Transfer'),
-        ],
-        widget=forms.RadioSelect(attrs={'class': 'mr-2'})
+        choices=PAYMENT_METHODS,
+        widget=forms.RadioSelect(attrs={
+            'class': 'payment-method-radio'
+        }),
+        help_text="Choose your preferred payment method"
+    )
+    
+    # Optional donor message
+    message = forms.CharField(
+        max_length=500,
+        required=False,
+        widget=forms.Textarea(attrs={
+            'class': 'w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+            'rows': 3,
+            'placeholder': 'Leave an encouraging message for the student (optional)'
+        }),
+        help_text="Share words of encouragement or support (optional)"
+    )
+    
+    # Recurring donation option
+    is_recurring = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+        }),
+        help_text="Make this a monthly recurring donation"
+    )
+    
+    # Cover processing fees option
+    cover_fees = forms.BooleanField(
+        required=False,
+        initial=True,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+        }),
+        help_text="Add a small amount to cover processing fees (recommended)"
     )
     
     class Meta:
         model = Donation
-        fields = ['amount', 'payment_method', 'anonymous']
+        fields = ['amount', 'payment_method', 'message', 'anonymous', 'is_recurring', 'cover_fees']
         widgets = {
-            'amount': forms.NumberInput(attrs={'class': 'w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-blue-500 focus:border-blue-500', 'min': '1', 'step': '0.01'}),
-            'anonymous': forms.CheckboxInput(attrs={'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'}),
+            'anonymous': forms.CheckboxInput(attrs={
+                'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+            }),
         }
+    
+    def __init__(self, *args, **kwargs):
+        self.campaign = kwargs.pop('campaign', None)
+        super().__init__(*args, **kwargs)
+        
+        # Add campaign-specific validation if needed
+        if self.campaign:
+            remaining_amount = self.campaign.goal - self.campaign.current_amount
+            if remaining_amount > 0:
+                self.fields['amount'].help_text = f"Minimum: $1 | Remaining to goal: ${remaining_amount:,.2f}"
+    
+    def clean_amount(self):
+        amount = self.cleaned_data.get('amount')
+        
+        if amount < 1:
+            raise forms.ValidationError("Minimum donation amount is $1")
+        
+        if amount > 10000:
+            raise forms.ValidationError("Maximum single donation is $10,000. Please contact us for larger donations.")
+        
+        return amount
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        amount = cleaned_data.get('amount')
+        cover_fees = cleaned_data.get('cover_fees')
+        
+        # Calculate processing fee if cover_fees is selected
+        if amount and cover_fees:
+            processing_fee = self.calculate_processing_fee(amount)
+            cleaned_data['processing_fee'] = processing_fee
+            cleaned_data['total_amount'] = amount + processing_fee
+        else:
+            cleaned_data['processing_fee'] = 0
+            cleaned_data['total_amount'] = amount
+        
+        return cleaned_data
+    
+    def calculate_processing_fee(self, amount):
+        """Calculate processing fee based on payment method and amount"""
+        # Standard processing fee: 2.9% + $0.30
+        percentage_fee = amount * 0.029
+        fixed_fee = 0.30
+        return round(percentage_fee + fixed_fee, 2)
+
+class DonationSearchForm(forms.Form):
+    """Form for searching and filtering donations"""
+    
+    SORT_CHOICES = [
+        ('-created_at', 'Most Recent'),
+        ('created_at', 'Oldest First'),
+        ('-amount', 'Highest Amount'),
+        ('amount', 'Lowest Amount'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('', 'All Statuses'),
+        ('completed', 'Completed'),
+        ('pending', 'Pending'),
+        ('failed', 'Failed'),
+    ]
+    
+    PAYMENT_METHOD_CHOICES = [
+        ('', 'All Payment Methods'),
+        ('paypal', 'PayPal'),
+        ('stripe', 'Credit/Debit Card'),
+        ('mobile_money', 'Mobile Money'),
+        ('bank_transfer', 'Bank Transfer'),
+        ('crypto', 'Cryptocurrency'),
+    ]
+    
+    search = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500',
+            'placeholder': 'Search by campaign title or donor name...'
+        })
+    )
+    
+    status = forms.ChoiceField(
+        choices=STATUS_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
+    
+    payment_method = forms.ChoiceField(
+        choices=PAYMENT_METHOD_CHOICES,
+        required=False,
+        widget=forms.Select(attrs={
+            'class': 'border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
+    
+    min_amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500',
+            'placeholder': 'Min amount'
+        })
+    )
+    
+    max_amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        required=False,
+        widget=forms.NumberInput(attrs={
+            'class': 'border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500',
+            'placeholder': 'Max amount'
+        })
+    )
+    
+    sort_by = forms.ChoiceField(
+        choices=SORT_CHOICES,
+        required=False,
+        initial='-created_at',
+        widget=forms.Select(attrs={
+            'class': 'border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
+
+class BulkDonationForm(forms.Form):
+    """Form for making donations to multiple campaigns at once"""
+    
+    campaigns = forms.ModelMultipleChoiceField(
+        queryset=Campaign.objects.filter(approved=True),
+        widget=forms.CheckboxSelectMultiple(attrs={
+            'class': 'campaign-checkbox'
+        }),
+        help_text="Select campaigns you want to support"
+    )
+    
+    total_amount = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        min_value=1,
+        widget=forms.NumberInput(attrs={
+            'class': 'w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
+            'placeholder': '100.00'
+        }),
+        help_text="Total amount to distribute among selected campaigns"
+    )
+    
+    DISTRIBUTION_CHOICES = [
+        ('equal', 'Equal distribution among all campaigns'),
+        ('proportional', 'Proportional to campaign needs'),
+        ('custom', 'Custom amounts for each campaign'),
+    ]
+    
+    distribution_method = forms.ChoiceField(
+        choices=DISTRIBUTION_CHOICES,
+        widget=forms.RadioSelect(),
+        initial='equal'
+    )
+    
+    payment_method = forms.ChoiceField(
+        choices=DonationForm.PAYMENT_METHODS,
+        widget=forms.Select(attrs={
+            'class': 'w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+        })
+    )
