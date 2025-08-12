@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Manage Donations - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Manage Donations</h1>
+        <a href="{% url 'admin_dashboard' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
+            Back to Dashboard
+        </a>
+    </div>
+    
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-medium text-gray-900">Total Donations</h3>
+            <p class="text-3xl font-bold text-blue-600">{{ total_donations }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-medium text-gray-900">Total Amount</h3>
+            <p class="text-3xl font-bold text-green-600">${{ total_amount|floatformat:2 }}</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-medium text-gray-900">Pending Review</h3>
+            <p class="text-3xl font-bold text-orange-600">{{ pending_count }}</p>
+        </div>
+    </div>
+    
+    <!-- Filters -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <form method="get" class="flex flex-wrap gap-4">
+            <div>
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select name="status" id="status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Statuses</option>
+                    {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label for="payment_method" class="block text-sm font-medium text-gray-700">Payment Method</label>
+                <select name="payment_method" id="payment_method" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    <option value="all" {% if payment_method_filter == 'all' %}selected{% endif %}>All Methods</option>
+                    {% for value, label in payment_method_choices %}
+                    <option value="{{ value }}" {% if payment_method_filter == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="flex items-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Donations Table -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+            {% for donation in donations %}
+            <li class="px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-indigo-600 truncate">
+                                ${{ donation.amount|floatformat:2 }} to {{ donation.campaign.title }}
+                            </p>
+                            <div class="ml-2 flex-shrink-0 flex">
+                                {% if donation.status == 'completed' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Completed
+                                </span>
+                                {% elif donation.status == 'pending' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                    Pending
+                                </span>
+                                {% elif donation.status == 'failed' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Failed
+                                </span>
+                                {% elif donation.status == 'refunded' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    Refunded
+                                </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mt-2 sm:flex sm:justify-between">
+                            <div class="sm:flex">
+                                <p class="flex items-center text-sm text-gray-500">
+                                    From: {{ donation.get_display_name }}
+                                </p>
+                                <p class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
+                                    {{ donation.get_payment_method_display }}
+                                </p>
+                            </div>
+                            <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+                                <p>{{ donation.created_at|date:"M d, Y H:i" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ml-4 flex space-x-2">
+                        {% if donation.status == 'pending' and donation.payment_method in 'mobile_money,bank_transfer,crypto' %}
+                        <a href="{% url 'process_manual_payment' donation.id %}" 
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                            Process
+                        </a>
+                        {% endif %}
+                        
+                        {% if donation.status == 'completed' %}
+                        <a href="{% url 'refund_donation' donation.id %}" 
+                           class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                            Refund
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% if donation.message %}
+                <div class="mt-2 text-sm text-gray-600 bg-gray-50 p-2 rounded">
+                    <strong>Message:</strong> {{ donation.message }}
+                </div>
+                {% endif %}
+                
+                {% if donation.admin_notes %}
+                <div class="mt-2 text-sm text-gray-600 bg-yellow-50 p-2 rounded">
+                    <strong>Admin Notes:</strong> {{ donation.admin_notes }}
+                </div>
+                {% endif %}
+            </li>
+            {% empty %}
+            <li class="px-6 py-4 text-center text-gray-500">
+                No donations found matching your criteria.
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

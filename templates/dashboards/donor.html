@@ -26,7 +26,7 @@
                     <div class="ml-5 w-0 flex-1">
                         <dl>
                             <dt class="text-sm font-medium text-gray-500 truncate">Total Donated</dt>
-                            <dd class="text-lg font-medium text-gray-900">${{ total_donated|floatformat:2 }}</dd>
+                            <dd class="text-lg font-medium text-gray-900">R{{ total_donated|floatformat:2 }}</dd>
                         </dl>
                     </div>
                 </div>
@@ -163,8 +163,8 @@
                             
                             <div class="mt-3">
                                 <div class="flex items-center text-sm text-gray-500">
-                                    <span class="mr-4">Goal: ${{ campaign.goal|floatformat:0 }}</span>
-                                    <span class="mr-4">Raised: ${{ campaign.current_amount|floatformat:0 }}</span>
+                                    <span class="mr-4">Goal: R{{ campaign.goal|floatformat:0 }}</span>
+                                    <span class="mr-4">Raised: R{{ campaign.current_amount|floatformat:0 }}</span>
                                     {% widthratio campaign.current_amount campaign.goal 100 as progress_percent %}
                                     <span>{{ progress_percent }}% Complete</span>
                                 </div>

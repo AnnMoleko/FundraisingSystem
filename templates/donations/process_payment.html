@@ -3,62 +3,316 @@
 
 {% block title %}Complete Payment - EduFund{% endblock %}
 
+{% block extra_css %}
+<style>
+    .payment-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+    }
+    
+    .payment-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .stripe-card-element {
+        padding: 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        background: white;
+        margin: 1rem 0;
+    }
+    
+    .stripe-card-element.StripeElement--focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    .payment-summary {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+    
+    .btn-pay {
+        width: 100%;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .btn-pay:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    
+    .btn-pay:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .payment-error {
+        color: #dc2626;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        padding: 0.75rem;
+        border-radius: 6px;
+        margin: 1rem 0;
+        font-size: 0.9em;
+    }
+    
+    .loading-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #ffffff;
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+<div class="container mx-auto px-4 py-8">
+    <div class="payment-container">
+        <!-- Payment Header -->
+        <div class="payment-header">
+            <h1 class="text-2xl font-bold mb-2">Complete Your Payment</h1>
+            <p class="opacity-90">Supporting {{ donation.campaign.title }}</p>
+            <div class="text-3xl font-bold mt-4">${{ total_amount|floatformat:2 }}</div>
+        </div>
+        
+        <!-- Payment Content -->
         <div class="p-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-2">Complete Your Payment</h1>
-            <p class="text-gray-600 mb-6">You are donating <strong>${{ donation.amount }}</strong> to <strong>{{ donation.campaign.title }}</strong></p>
-            
-            <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Information</h3>
-                
-                {% if donation.payment_method == 'paypal' %}
-                    <div class="mb-4">
-                        <p class="text-gray-600">
-                            <strong>Payment Method:</strong> PayPal
-                        </p>
-                        <p class="text-sm text-gray-500 mt-2">
-                            In a real application, you would be redirected to PayPal to complete this transaction.
-                            For this demo, we'll simulate a successful payment.
-                        </p>
+            <!-- Payment Summary -->
+            <div class="payment-summary">
+                <h3 class="text-lg font-medium text-gray-900 mb-3">Payment Summary</h3>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Donation Amount:</span>
+                        <span class="font-medium">${{ donation.amount|floatformat:2 }}</span>
                     </div>
-                {% elif donation.payment_method == 'mobile_money' %}
-                    <div class="mb-4">
-                        <p class="text-gray-600">
-                            <strong>Payment Method:</strong> Mobile Money
-                        </p>
-                        <p class="text-sm text-gray-500 mt-2">
-                            In a real application, you would receive instructions to complete a mobile money transfer.
-                            For this demo, we'll simulate a successful payment.
-                        </p>
+                    {% if donation.processing_fee %}
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Processing Fee:</span>
+                        <span class="font-medium">${{ donation.processing_fee|floatformat:2 }}</span>
                     </div>
-                {% elif donation.payment_method == 'bank_transfer' %}
-                    <div class="mb-4">
-                        <p class="text-gray-600">
-                            <strong>Payment Method:</strong> Bank Transfer
-                        </p>
-                        <p class="text-sm text-gray-500 mt-2">
-                            In a real application, you would receive bank account details to complete a transfer.
-                            For this demo, we'll simulate a successful payment.
-                        </p>
+                    {% endif %}
+                    <div class="border-t pt-2 flex justify-between font-bold">
+                        <span>Total:</span>
+                        <span>${{ total_amount|floatformat:2 }}</span>
                     </div>
-                {% endif %}
+                </div>
             </div>
             
-            <form method="post" class="space-y-6">
-                {% csrf_token %}
-                
-                <button type="submit" class="w-full px-4 py-3 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    Complete Payment
-                </button>
-                
-                <div class="text-center">
-                    <a href="{% url 'campaign_detail' donation.campaign.id %}" class="text-sm text-gray-500 hover:text-gray-700">
-                        Cancel and return to campaign
-                    </a>
+            <!-- Payment Method Specific Content -->
+            {% if donation.payment_method == 'stripe' or donation.payment_method == 'credit_card' %}
+                <!-- Stripe Payment Form -->
+                <div id="stripe-payment-form">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Credit Card Information</h3>
+                    
+                    <form id="payment-form">
+                        {% csrf_token %}
+                        <div id="card-element" class="stripe-card-element">
+                            <!-- Stripe Elements will create form elements here -->
+                        </div>
+                        
+                        <div id="card-errors" class="payment-error" style="display: none;"></div>
+                        
+                        <button id="submit-payment" class="btn-pay mt-4">
+                            <span id="button-text">Complete Payment</span>
+                            <div id="spinner" class="loading-spinner" style="display: none;"></div>
+                        </button>
+                    </form>
                 </div>
-            </form>
+                
+                <!-- Stripe JavaScript -->
+                <script src="https://js.stripe.com/v3/"></script>
+                <script>
+                    const stripe = Stripe('{{ stripe_publishable_key }}');
+                    const elements = stripe.elements();
+                    
+                    // Create card element
+                    const cardElement = elements.create('card', {
+                        style: {
+                            base: {
+                                fontSize: '16px',
+                                color: '#424770',
+                                '::placeholder': {
+                                    color: '#aab7c4',
+                                },
+                            },
+                        },
+                    });
+                    
+                    cardElement.mount('#card-element');
+                    
+                    // Handle form submission
+                    const form = document.getElementById('payment-form');
+                    const submitButton = document.getElementById('submit-payment');
+                    const buttonText = document.getElementById('button-text');
+                    const spinner = document.getElementById('spinner');
+                    const cardErrors = document.getElementById('card-errors');
+                    
+                    form.addEventListener('submit', async (event) => {
+                        event.preventDefault();
+                        
+                        // Disable submit button and show loading
+                        submitButton.disabled = true;
+                        buttonText.style.display = 'none';
+                        spinner.style.display = 'inline-block';
+                        
+                        try {
+                            // Create payment intent on server
+                            const response = await fetch('', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                                },
+                                body: JSON.stringify({})
+                            });
+                            
+                            const result = await response.json();
+                            
+                            if (result.success && result.client_secret) {
+                                // Confirm payment with Stripe
+                                const {error} = await stripe.confirmCardPayment(result.client_secret, {
+                                    payment_method: {
+                                        card: cardElement,
+                                    }
+                                });
+                                
+                                if (error) {
+                                    // Show error to customer
+                                    cardErrors.textContent = error.message;
+                                    cardErrors.style.display = 'block';
+                                } else {
+                                    // Payment succeeded, redirect to success page
+                                    window.location.href = '{% url "donation_success" donation.id %}';
+                                }
+                            } else {
+                                cardErrors.textContent = result.error || 'Payment failed. Please try again.';
+                                cardErrors.style.display = 'block';
+                            }
+                        } catch (error) {
+                            cardErrors.textContent = 'Network error. Please try again.';
+                            cardErrors.style.display = 'block';
+                        }
+                        
+                        // Re-enable submit button
+                        submitButton.disabled = false;
+                        buttonText.style.display = 'inline';
+                        spinner.style.display = 'none';
+                    });
+                    
+                    // Handle real-time validation errors from the card Element
+                    cardElement.on('change', ({error}) => {
+                        if (error) {
+                            cardErrors.textContent = error.message;
+                            cardErrors.style.display = 'block';
+                        } else {
+                            cardErrors.style.display = 'none';
+                        }
+                    });
+                </script>
+                
+            {% elif donation.payment_method == 'paypal' %}
+                <!-- PayPal Payment -->
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">PayPal Payment</h3>
+                    <p class="text-gray-600 mb-6">You will be redirected to PayPal to complete your payment securely.</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-pay">
+                            Continue to PayPal
+                        </button>
+                    </form>
+                </div>
+                
+            {% else %}
+                <!-- Other Payment Methods -->
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">{{ donation.get_payment_method_display }}</h3>
+                    
+                    {% if donation.payment_method == 'mobile_money' %}
+                        <div class="bg-blue-50 p-4 rounded-md mb-6 text-left">
+                            <h4 class="font-medium text-blue-900 mb-2">Mobile Money Instructions:</h4>
+                            <ol class="text-sm text-blue-800 space-y-1">
+                                <li>1. Dial *150*00# on your mobile phone</li>
+                                <li>2. Select "Send Money"</li>
+                                <li>3. Enter recipient number: <strong>+1234567890</strong></li>
+                                <li>4. Enter amount: <strong>${{ total_amount|floatformat:2 }}</strong></li>
+                                <li>5. Reference: <strong>{{ donation.id }}</strong></li>
+                                <li>6. Confirm the transaction</li>
+                            </ol>
+                        </div>
+                        
+                    {% elif donation.payment_method == 'bank_transfer' %}
+                        <div class="bg-green-50 p-4 rounded-md mb-6 text-left">
+                            <h4 class="font-medium text-green-900 mb-2">Bank Transfer Details:</h4>
+                            <div class="text-sm text-green-800 space-y-1">
+                                <p><strong>Bank:</strong> EduFund Bank</p>
+                                <p><strong>Account Name:</strong> EduFund Foundation</p>
+                                <p><strong>Account Number:</strong> 1234567890</p>
+                                <p><strong>Routing Number:</strong> 021000021</p>
+                                <p><strong>Amount:</strong> ${{ total_amount|floatformat:2 }}</p>
+                                <p><strong>Reference:</strong> {{ donation.id }}</p>
+                            </div>
+                        </div>
+                        
+                    {% elif donation.payment_method == 'crypto' %}
+                        <div class="bg-purple-50 p-4 rounded-md mb-6 text-left">
+                            <h4 class="font-medium text-purple-900 mb-2">Cryptocurrency Payment:</h4>
+                            <div class="text-sm text-purple-800 space-y-1">
+                                <p><strong>Bitcoin Address:</strong> 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</p>
+                                <p><strong>Ethereum Address:</strong> 0x742d35Cc6634C0532925a3b8D4C9db96590b4c5d</p>
+                                <p><strong>Amount:</strong> ${{ total_amount|floatformat:2 }} USD equivalent</p>
+                                <p><strong>Reference:</strong> {{ donation.id }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-pay">
+                            I have completed the payment
+                        </button>
+                    </form>
+                    
+                    <p class="text-sm text-gray-500 mt-4">
+                        Your donation will be verified within 24 hours. You'll receive a confirmation email once verified.
+                    </p>
+                </div>
+            {% endif %}
+            
+            <!-- Cancel Link -->
+            <div class="text-center mt-6">
+                <a href="{% url 'campaign_detail' donation.campaign.id %}" class="text-sm text-gray-500 hover:text-gray-700">
+                    Cancel and return to campaign
+                </a>
+            </div>
         </div>
     </div>
 </div>
