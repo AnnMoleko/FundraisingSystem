@@ -81,6 +81,11 @@ class Donation(models.Model):
     PAYMENT_METHOD_CHOICES = (
         ('paypal', 'PayPal'),
         ('stripe', 'Credit/Debit Card'),
+        ('credit_card', 'Credit/Debit Card'),
+        ('visa', 'Visa'),
+        ('mastercard', 'MasterCard'),
+        ('amex', 'American Express'),
+        ('discover', 'Discover'),
         ('mobile_money', 'Mobile Money'),
         ('bank_transfer', 'Bank Transfer'),
         ('crypto', 'Cryptocurrency'),

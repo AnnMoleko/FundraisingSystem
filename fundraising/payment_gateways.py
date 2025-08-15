@@ -237,7 +237,7 @@ class PaymentGatewayFactory:
     @classmethod
     def get_gateway(cls, payment_method):
         """Get payment gateway based on payment method"""
-        if payment_method in ['stripe', 'credit_card', 'debit_card']:
+        if payment_method in ['stripe', 'credit_card', 'debit_card', 'visa', 'mastercard', 'amex', 'discover']:
             return cls.GATEWAYS.get('stripe')
         elif payment_method == 'paypal':
             return cls.GATEWAYS.get('paypal')
@@ -252,7 +252,7 @@ class PaymentGatewayFactory:
         if not gateway:
             raise PaymentGatewayError(f"No gateway found for payment method: {payment_method}")
         
-        if payment_method in ['stripe', 'credit_card', 'debit_card']:
+        if payment_method in ['stripe', 'credit_card', 'debit_card', 'visa', 'mastercard', 'amex', 'discover']:
             return gateway.create_payment_intent(amount, **kwargs)
         elif payment_method == 'paypal':
             return gateway.create_payment(amount, **kwargs)

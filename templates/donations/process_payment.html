@@ -126,10 +126,23 @@
             </div>
             
             <!-- Payment Method Specific Content -->
-            {% if donation.payment_method == 'stripe' or donation.payment_method == 'credit_card' %}
+            {% if donation.payment_method == 'stripe' or donation.payment_method == 'credit_card' or donation.payment_method == 'visa' or donation.payment_method == 'mastercard' or donation.payment_method == 'amex' or donation.payment_method == 'discover' %}
                 <!-- Stripe Payment Form -->
                 <div id="stripe-payment-form">
-                    <h3 class="text-lg font-medium text-gray-900 mb-4">Credit Card Information</h3>
+                    <!-- Updated header to show specific card type when selected -->
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">
+                        {% if donation.payment_method == 'visa' %}
+                            Visa Payment
+                        {% elif donation.payment_method == 'mastercard' %}
+                            MasterCard Payment
+                        {% elif donation.payment_method == 'amex' %}
+                            American Express Payment
+                        {% elif donation.payment_method == 'discover' %}
+                            Discover Payment
+                        {% else %}
+                            Credit/Debit Card Payment
+                        {% endif %}
+                    </h3>
                     
                     <form id="payment-form">
                         {% csrf_token %}
