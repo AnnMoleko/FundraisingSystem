@@ -7,7 +7,7 @@ import logging
 import uuid
 
 logger = logging.getLogger(__name__)
-
+#REMOVE THIS COMMENT WHEN YOU RETURN
 # Initialize Stripe
 stripe.api_key = getattr(settings, 'STRIPE_SECRET_KEY', '')
 
