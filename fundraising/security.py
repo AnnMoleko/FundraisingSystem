@@ -2,7 +2,7 @@ from django.core.cache import cache
 from django.http import HttpResponseForbidden
 from django.utils import timezone
 from django.conf import settings
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 import hashlib
 import hmac
 import re
@@ -36,6 +36,15 @@ class PaymentSecurityValidator:
     def validate_donation_amount(cls, amount, user=None):
         """Validate donation amount for suspicious patterns"""
         errors = []
+        
+        try:
+            if isinstance(amount, str):
+                amount = Decimal(amount)
+            elif not isinstance(amount, Decimal):
+                amount = Decimal(str(amount))
+        except (ValueError, TypeError):
+            errors.append("Invalid donation amount format")
+            return errors
         
         # Check minimum and maximum limits
         if amount < Decimal('1.00'):
@@ -119,6 +128,15 @@ class PaymentSecurityValidator:
     def validate_payment_method(cls, payment_method, amount):
         """Validate payment method selection"""
         errors = []
+        
+        try:
+            if isinstance(amount, str):
+                amount = Decimal(amount)
+            elif not isinstance(amount, Decimal):
+                amount = Decimal(str(amount))
+        except (ValueError, TypeError):
+            errors.append("Invalid amount format")
+            return errors
         
         # Check if payment method is supported
         valid_methods = ['paypal', 'stripe', 'mobile_money', 'bank_transfer', 'crypto']
@@ -285,11 +303,25 @@ class DonationValidator:
         
         # Basic form validation
         amount = form_data.get('amount')
+        converted_amount = None
+        
         if amount:
-            amount_errors = PaymentSecurityValidator.validate_donation_amount(
-                amount, request.user if request.user.is_authenticated else None
-            )
-            errors.extend(amount_errors)
+            try:
+                if isinstance(amount, str):
+                    converted_amount = Decimal(amount)
+                elif isinstance(amount, Decimal):
+                    converted_amount = amount
+                else:
+                    converted_amount = Decimal(str(amount))
+            except (ValueError, TypeError, InvalidOperation):
+                errors.append("Invalid donation amount format")
+                converted_amount = None
+            
+            if converted_amount:
+                amount_errors = PaymentSecurityValidator.validate_donation_amount(
+                    converted_amount, request.user if request.user.is_authenticated else None
+                )
+                errors.extend(amount_errors)
         
         # Message validation
         message = form_data.get('message', '')
@@ -305,16 +337,16 @@ class DonationValidator:
         
         # Payment method validation
         payment_method = form_data.get('payment_method')
-        if payment_method and amount:
+        if payment_method and converted_amount:
             method_errors = PaymentSecurityValidator.validate_payment_method(
-                payment_method, amount
+                payment_method, converted_amount
             )
             errors.extend(method_errors)
         
         # Fraud detection
         fraud_analysis = PaymentSecurityValidator.detect_fraud_patterns({
             'user': request.user if request.user.is_authenticated else None,
-            'amount': amount,
+            'amount': converted_amount,  # Use converted_amount
             'ip_address': ip_address,
             'user_agent': user_agent,
             'donor_email': form_data.get('donor_email', ''),
@@ -340,7 +372,7 @@ class DonationValidator:
                 'user_agent': user_agent,
             }
         }
-    
+
     @staticmethod
     def _get_client_ip(request):
         """Get client IP address"""
