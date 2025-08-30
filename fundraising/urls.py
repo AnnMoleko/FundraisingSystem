@@ -24,17 +24,17 @@ urlpatterns = [
     path('admin-dashboard/campaigns/<int:pk>/approve/', views.admin_campaign_approve, name='admin_campaign_approve'),
     path('admin-dashboard/campaigns/<int:pk>/reject/', views.admin_campaign_reject, name='admin_campaign_reject'),
     
-    path('admin-dashboard/donations/', views.admin_donations_list, name='admin_donations_list'),
-    path('admin-dashboard/donations/<int:donation_id>/process/', views.process_manual_payment, name='process_manual_payment'),
-    path('admin-dashboard/donations/<int:donation_id>/refund/', views.refund_donation, name='refund_donation'),
+    path('admin-dashboard/donations/', views.donations_list, name='donations_list'),
+    path('admin-dashboard/donations/<uuid:donation_id>/process/', views.process_manual_payment, name='process_manual_payment'),
+    path('admin-dashboard/donations/<uuid:donation_id>/refund/', views.refund_donation, name='refund_donation'),
     
     # Donor dashboard and routes
     path('donor/dashboard/', views.donor_dashboard, name='donor_dashboard'),
     
     # Donation routes
     path('campaigns/<int:campaign_id>/donate/', views.make_donation, name='make_donation'),
-    path('donations/<int:donation_id>/payment/', views.process_payment, name='process_payment'),
-    path('donations/<int:donation_id>/success/', views.donation_success, name='donation_success'),
+    path('donations/<uuid:donation_id>/payment/', views.process_payment, name='process_payment'),
+    path('donations/<uuid:donation_id>/success/', views.donation_success, name='donation_success'),
     
     # PayPal specific routes
     path('donations/<int:donation_id>/paypal/return/', views.paypal_return, name='paypal_return'),

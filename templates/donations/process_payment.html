@@ -160,7 +160,7 @@
                 </div>
                 
                 <!-- Stripe JavaScript -->
-                <script src="https://js.stripe.com/v3/"></script>
+                <script src="https://api.stripe.com/v1/payment_intents"></script>
                 <script>
                     const stripe = Stripe('{{ stripe_publishable_key }}');
                     const elements = stripe.elements();

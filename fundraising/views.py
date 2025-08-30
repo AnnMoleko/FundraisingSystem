@@ -14,6 +14,7 @@ from django.utils import timezone
 import stripe
 import hashlib
 import hmac
+from uuid import UUID
 
 from .models import Campaign, Donation
 from authentication.models import User
@@ -206,7 +207,7 @@ def admin_campaign_reject(request, pk):
 
 @login_required
 @admin_required
-def process_manual_payment(request, donation_id):
+def process_manual_payment(request, donation_id:UUID):
     """Admin function to manually process payments for non-automated methods"""
     donation = get_object_or_404(Donation, pk=donation_id)
     
@@ -238,13 +239,13 @@ def process_manual_payment(request, donation_id):
             
             messages.success(request, f"Payment for donation {donation.id} has been rejected.")
         
-        return redirect('admin_donations_list')
+        return redirect('donations_list')
     
     return render(request, 'admin/process_manual_payment.html', {'donation': donation})
 
 @login_required
 @admin_required
-def admin_donations_list(request):
+def donations_list(request):
     """Admin view to list and manage donations"""
     status_filter = request.GET.get('status', 'all')
     payment_method_filter = request.GET.get('payment_method', 'all')
@@ -278,7 +279,7 @@ def admin_donations_list(request):
 
 @login_required
 @admin_required
-def refund_donation(request, donation_id):
+def refund_donation(request, donation_id:UUID):
     """Admin function to process refunds"""
     donation = get_object_or_404(Donation, pk=donation_id)
     
@@ -469,7 +470,7 @@ def make_donation(request, campaign_id):
 @login_required
 @donor_required
 @secure_payment_view
-def process_payment(request, donation_id):
+def process_payment(request, donation_id: UUID):
     donation = get_object_or_404(Donation, pk=donation_id, donor=request.user)
     
     if donation.status == 'completed':
