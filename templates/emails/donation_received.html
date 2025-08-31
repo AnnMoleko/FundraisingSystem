@@ -20,7 +20,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎉 You Received a Donation!</h1>
+            <h1>You Received a Donation!</h1>
             <p>Someone believes in your educational journey</p>
         </div>
         
@@ -31,7 +31,7 @@
             
             <div class="donation-details">
                 <h3>Donation Details</h3>
-                <p><strong>Amount:</strong> <span class="amount">${{ donation.amount|floatformat:2 }}</span></p>
+                <p><strong>Amount:</strong> <span class="amount">R{{ donation.amount|floatformat:2 }}</span></p>
                 <p><strong>From:</strong> {{ donor_name }}</p>
                 <p><strong>Date:</strong> {{ donation.created_at|date:"F d, Y" }}</p>
                 
@@ -50,7 +50,7 @@
             <p><strong>${{ campaign.current_amount|floatformat:2 }}</strong> raised of <strong>${{ campaign.goal|floatformat:2 }}</strong> goal ({{ campaign.progress_percentage }}%)</p>
             
             {% if campaign.progress_percentage >= 100 %}
-            <p style="color: #059669; font-weight: bold;">🎊 Congratulations! Your campaign has reached its goal!</p>
+            <p style="color: #059669; font-weight: bold;"> Congratulations! Your campaign has reached its goal!</p>
             {% else %}
             <p>You're <strong>${{ campaign.remaining_amount|floatformat:2 }}</strong> away from reaching your goal!</p>
             {% endif %}

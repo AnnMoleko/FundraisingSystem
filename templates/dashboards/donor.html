@@ -121,7 +121,7 @@
                                 <p class="text-xs text-gray-400">{{ donation.created_at|timesince }} ago</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-sm font-medium text-green-600">${{ donation.amount|floatformat:2 }}</p>
+                                <p class="text-sm font-medium text-green-600">R{{ donation.amount|floatformat:2 }}</p>
                                 <p class="text-xs text-gray-500">{{ donation.get_status_display }}</p>
                             </div>
                         </div>

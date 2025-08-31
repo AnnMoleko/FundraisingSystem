@@ -24,7 +24,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Amount Donated</dt>
-                        <dd class="text-lg font-bold text-green-600">${{ donation.amount }}</dd>
+                        <dd class="text-lg font-bold text-green-600">R{{ donation.amount }}</dd>
                     </div>
                     
                     <div>
@@ -65,16 +65,16 @@
             <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">Your Impact</h3>
                 <p class="text-gray-700">
-                    Your generous donation of <strong>${{ donation.amount }}</strong> brings 
+                    Your generous donation of <strong>R{{ donation.amount }}</strong> brings 
                     {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} 
-                    <strong>${{ donation.amount }}</strong> closer to their educational goal!
+                    <strong>R{{ donation.amount }}</strong> closer to their educational goal!
                 </p>
                 
                 <!-- Updated Progress Bar -->
                 <div class="mt-4">
                     <div class="flex justify-between text-sm text-gray-600 mb-1">
                         <span>Campaign Progress</span>
-                        <span>${{ donation.campaign.current_amount|floatformat:0 }} of ${{ donation.campaign.goal|floatformat:0 }}</span>
+                        <span>R{{ donation.campaign.current_amount|floatformat:0 }} of R{{ donation.campaign.goal|floatformat:0 }}</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-3">
                         <div class="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full transition-all duration-1000" 

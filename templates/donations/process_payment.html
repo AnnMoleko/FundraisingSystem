@@ -99,7 +99,7 @@
         <div class="payment-header">
             <h1 class="text-2xl font-bold mb-2">Complete Your Payment</h1>
             <p class="opacity-90">Supporting {{ donation.campaign.title }}</p>
-            <div class="text-3xl font-bold mt-4">${{ total_amount|floatformat:2 }}</div>
+            <div class="text-3xl font-bold mt-4">R{{ total_amount|floatformat:2 }}</div>
         </div>
         
         <!-- Payment Content -->
@@ -110,17 +110,17 @@
                 <div class="space-y-2">
                     <div class="flex justify-between">
                         <span class="text-gray-600">Donation Amount:</span>
-                        <span class="font-medium">${{ donation.amount|floatformat:2 }}</span>
+                        <span class="font-medium">R{{ donation.amount|floatformat:2 }}</span>
                     </div>
                     {% if donation.processing_fee %}
                     <div class="flex justify-between">
                         <span class="text-gray-600">Processing Fee:</span>
-                        <span class="font-medium">${{ donation.processing_fee|floatformat:2 }}</span>
+                        <span class="font-medium">R{{ donation.processing_fee|floatformat:2 }}</span>
                     </div>
                     {% endif %}
                     <div class="border-t pt-2 flex justify-between font-bold">
                         <span>Total:</span>
-                        <span>${{ total_amount|floatformat:2 }}</span>
+                        <span>R{{ total_amount|floatformat:2 }}</span>
                     </div>
                 </div>
             </div>
@@ -276,7 +276,7 @@
                                 <li>1. Dial *150*00# on your mobile phone</li>
                                 <li>2. Select "Send Money"</li>
                                 <li>3. Enter recipient number: <strong>+1234567890</strong></li>
-                                <li>4. Enter amount: <strong>${{ total_amount|floatformat:2 }}</strong></li>
+                                <li>4. Enter amount: <strong>R{{ total_amount|floatformat:2 }}</strong></li>
                                 <li>5. Reference: <strong>{{ donation.id }}</strong></li>
                                 <li>6. Confirm the transaction</li>
                             </ol>
@@ -290,7 +290,7 @@
                                 <p><strong>Account Name:</strong> EduFund Foundation</p>
                                 <p><strong>Account Number:</strong> 1234567890</p>
                                 <p><strong>Routing Number:</strong> 021000021</p>
-                                <p><strong>Amount:</strong> ${{ total_amount|floatformat:2 }}</p>
+                                <p><strong>Amount:</strong> R{{ total_amount|floatformat:2 }}</p>
                                 <p><strong>Reference:</strong> {{ donation.id }}</p>
                             </div>
                         </div>
@@ -301,7 +301,7 @@
                             <div class="text-sm text-purple-800 space-y-1">
                                 <p><strong>Bitcoin Address:</strong> 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</p>
                                 <p><strong>Ethereum Address:</strong> 0x742d35Cc6634C0532925a3b8D4C9db96590b4c5d</p>
-                                <p><strong>Amount:</strong> ${{ total_amount|floatformat:2 }} USD equivalent</p>
+                                <p><strong>Amount:</strong> R{{ total_amount|floatformat:2 }} USD equivalent</p>
                                 <p><strong>Reference:</strong> {{ donation.id }}</p>
                             </div>
                         </div>

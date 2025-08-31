@@ -20,7 +20,7 @@
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-medium text-gray-900">Total Amount</h3>
-            <p class="text-3xl font-bold text-green-600">${{ total_amount|floatformat:2 }}</p>
+            <p class="text-3xl font-bold text-green-600">R{{ total_amount|floatformat:2 }}</p>
         </div>
         <div class="bg-white p-6 rounded-lg shadow">
             <h3 class="text-lg font-medium text-gray-900">Pending Review</h3>
@@ -68,7 +68,7 @@
                     <div class="flex-1">
                         <div class="flex items-center justify-between">
                             <p class="text-sm font-medium text-indigo-600 truncate">
-                                ${{ donation.amount|floatformat:2 }} to {{ donation.campaign.title }}
+                                R{{ donation.amount|floatformat:2 }} to {{ donation.campaign.title }}
                             </p>
                             <div class="ml-2 flex-shrink-0 flex">
                                 {% if donation.status == 'completed' %}
