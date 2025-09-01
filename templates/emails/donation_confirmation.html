@@ -29,7 +29,7 @@
             
             <div class="donation-details">
                 <h3>Donation Details</h3>
-                <p><strong>Amount:</strong> <span class="amount">${{ donation.amount|floatformat:2 }}</span></p>
+                <p><strong>Amount:</strong> <span class="amount">R{{ donation.amount|floatformat:2 }}</span></p>
                 <p><strong>Campaign:</strong> {{ campaign.title }}</p>
                 <p><strong>Student:</strong> {{ campaign.student.full_name }}</p>
                 <p><strong>Date:</strong> {{ donation.created_at|date:"F d, Y" }}</p>

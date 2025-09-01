@@ -47,12 +47,12 @@
             <div class="progress-bar">
                 <div class="progress-fill" style="width: {{ campaign.progress_percentage }}%"></div>
             </div>
-            <p><strong>${{ campaign.current_amount|floatformat:2 }}</strong> raised of <strong>${{ campaign.goal|floatformat:2 }}</strong> goal ({{ campaign.progress_percentage }}%)</p>
+            <p><strong>R{{ campaign.current_amount|floatformat:2 }}</strong> raised of <strong>R{{ campaign.goal|floatformat:2 }}</strong> goal ({{ campaign.progress_percentage }}%)</p>
             
             {% if campaign.progress_percentage >= 100 %}
             <p style="color: #059669; font-weight: bold;"> Congratulations! Your campaign has reached its goal!</p>
             {% else %}
-            <p>You're <strong>${{ campaign.remaining_amount|floatformat:2 }}</strong> away from reaching your goal!</p>
+            <p>You're <strong>R{{ campaign.remaining_amount|floatformat:2 }}</strong> away from reaching your goal!</p>
             {% endif %}
             
             <p>This donation brings you one step closer to achieving your educational dreams. Remember to:</p>

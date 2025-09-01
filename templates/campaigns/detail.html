@@ -93,7 +93,7 @@
                         <form action="{% url 'make_donation' campaign.id %}" method="post" class="space-y-4">
                             {% csrf_token %}
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Amount ($)</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Amount (R)</label>
                                 {{ donation_form.amount }}
                             </div>
                             
@@ -141,7 +141,7 @@
                                     <p class="text-sm text-gray-500">{{ donation.created_at|date:"F d, Y" }}</p>
                                 </div>
                                 <div class="text-right">
-                                    <p class="text-green-600 font-semibold">${{ donation.amount }}</p>
+                                    <p class="text-green-600 font-semibold">R{{ donation.amount }}</p>
                                 </div>
                             </div>
                         {% endfor %}
