@@ -250,8 +250,8 @@
                     });
                 </script>
                 
-            {% elif donation.payment_method == 'paypal' %}
-                <!-- PayPal Payment -->
+           <!-- {% elif donation.payment_method == 'paypal' %}
+                 PayPal Payment 
                 <div class="text-center">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">PayPal Payment</h3>
                     <p class="text-gray-600 mb-6">You will be redirected to PayPal to complete your payment securely.</p>
@@ -262,7 +262,7 @@
                             Continue to PayPal
                         </button>
                     </form>
-                </div>
+                </div>-->
                 
             {% else %}
                 <!-- Other Payment Methods -->
@@ -295,7 +295,7 @@
                             </div>
                         </div>
                         
-                    {% elif donation.payment_method == 'crypto' %}
+                  <!--  {% elif donation.payment_method == 'crypto' %}
                         <div class="bg-purple-50 p-4 rounded-md mb-6 text-left">
                             <h4 class="font-medium text-purple-900 mb-2">Cryptocurrency Payment:</h4>
                             <div class="text-sm text-purple-800 space-y-1">
@@ -305,7 +305,7 @@
                                 <p><strong>Reference:</strong> {{ donation.id }}</p>
                             </div>
                         </div>
-                    {% endif %}
+                    {% endif %}-->
                     
                     <form method="post">
                         {% csrf_token %}
