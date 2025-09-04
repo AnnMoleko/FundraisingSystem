@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Donation Received - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .donation-alert {
+            background: #ecfdf5;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid #10b981;
+            text-align: center;
+        }
+        .amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: #059669;
+            margin: 10px 0;
+        }
+        .progress-section {
+            background: #f0f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #059669);
+            transition: width 0.3s ease;
+        }
+        .footer {
+            background: #f8fafc;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        .btn {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Great News!</h1>
+            <p>You received a new donation!</p>
+        </div>
+        
+        <div class="content">
+            <p>Dear {{ student.full_name }},</p>
+            
+            <p>Congratulations! Someone believes in your educational journey and has made a donation to your campaign <strong>"{{ campaign.title }}"</strong>.</p>
+            
+            <div class="donation-alert">
+                <h3 style="margin-top: 0; color: #1f2937;">New Donation Received</h3>
+                <div class="amount">${{ donation.amount|floatformat:2 }}</div>
+                <p style="margin-bottom: 0;">From: <strong>{{ donor_name }}</strong></p>
+            </div>
+            
+            {% if donation.message %}
+            <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #f59e0b;">
+                <h4 style="margin-top: 0; color: #1f2937;">Message from {{ donor_name }}:</h4>
+                <p style="margin-bottom: 0; font-style: italic; color: #92400e;">"{{ donation.message }}"</p>
+            </div>
+            {% endif %}
+            
+            <div class="progress-section">
+                <h3 style="margin-top: 0; color: #1f2937;">Campaign Progress Update</h3>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ progress_percentage }}%"></div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <span><strong>${{ campaign.current_amount|floatformat:2 }}</strong> raised</span>
+                    <span><strong>{{ progress_percentage }}%</strong> complete</span>
+                    <span><strong>${{ campaign.goal|floatformat:2 }}</strong> goal</span>
+                </div>
+                
+                {% if progress_percentage >= 100 %}
+                <div style="background: #dcfce7; padding: 15px; border-radius: 6px; margin-top: 15px; text-align: center;">
+                    <strong style="color: #059669;">🎊 Congratulations! Your campaign has reached its goal!</strong>
+                </div>
+                {% else %}
+                <p style="text-align: center; margin-top: 15px; color: #6b7280;">
+                    <strong>${{ campaign.remaining_amount|floatformat:2 }}</strong> remaining to reach your goal
+                </p>
+                {% endif %}
+            </div>
+            
+            <p>This donation brings you one step closer to achieving your educational dreams. Here are some next steps:</p>
+            
+            <ul style="color: #4b5563;">
+                <li>Consider sending a thank you message to your supporter</li>
+                <li>Share an update about your progress on social media</li>
+                <li>Keep your campaign description current and engaging</li>
+                <li>Continue reaching out to friends and family for support</li>
+            </ul>
+            
+            <div style="text-align: center;">
+                <a href="{{ request.build_absolute_uri }}/campaigns/{{ campaign.id }}/" class="btn">View Your Campaign</a>
+            </div>
+            
+            <p>Keep up the excellent work! Remember that every donation represents someone who believes in your potential and wants to see you succeed.</p>
+            
+            <p>Best wishes for your educational journey,<br>
+            <strong>The {{ site_name }} Team</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>{{ site_name }}</strong> - Supporting Education, One Student at a Time</p>
+        </div>
+    </div>
+</body>
+</html>

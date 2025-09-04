@@ -21,7 +21,7 @@ from authentication.models import User
 from .forms import CampaignForm, DonationForm
 from .decorators import student_required, donor_required, admin_required, secure_payment_view, log_payment_activity
 from .payment_gateways import PaymentGatewayFactory, PaymentGatewayError
-from .email_notifications import EmailNotificationService
+from .email_service import DonationReceiptEmailService
 from .security import WebhookSecurityValidator, DonationValidator
 
 logger = logging.getLogger(__name__)
@@ -224,8 +224,8 @@ def process_manual_payment(request, donation_id:UUID):
             donation.update_campaign_amount()
             
             # Send confirmation emails
-            EmailNotificationService.send_donation_confirmation(donation)
-            EmailNotificationService.send_donation_received_notification(donation)
+            DonationReceiptEmailService.send_donation_confirmation(donation)
+            DonationReceiptEmailService.send_donation_received_notification(donation)
             
             messages.success(request, f"Payment for donation {donation.id} has been approved.")
             
@@ -235,10 +235,14 @@ def process_manual_payment(request, donation_id:UUID):
             donation.save()
             
             # Send failure notification
-            EmailNotificationService.send_payment_failed_notification(donation)
+            # Send failure notification using new email service
+            try:
+                DonationReceiptEmailService.send_donation_receipt(donation)
+                logger.info(f"Payment failure notification sent for donation {donation.id}")
+            except Exception as e:
+                logger.error(f"Failed to send payment failure notification: {str(e)}")
             
             messages.success(request, f"Payment for donation {donation.id} has been rejected.")
-        
         return redirect('donations_list')
     
     return render(request, 'admin/process_manual_payment.html', {'donation': donation})
@@ -317,26 +321,26 @@ def refund_donation(request, donation_id:UUID):
                 if result['success']:
                     # Update donation status and amount
                     donation.status = 'refunded'
-                    donation.admin_notes = f"Refunded ${refund_amount}. Reason: {reason}"
+                    donation.admin_notes = f"Refunded R{refund_amount}. Reason: {reason}"
                     donation.save()
                     
                     # Update campaign amount
                     donation.update_campaign_amount()
                     
-                    messages.success(request, f"PayPal refund of ${refund_amount} processed successfully.")
+                    messages.success(request, f"PayPal refund of R{refund_amount} processed successfully.")
                 else:
                     messages.error(request, f"PayPal refund failed: {result['error']}")
             
             else:
                 # Manual refund for other payment methods
                 donation.status = 'refunded'
-                donation.admin_notes = f"Manual refund of ${refund_amount}. Reason: {reason}"
+                donation.admin_notes = f"Manual refund of R{refund_amount}. Reason: {reason}"
                 donation.save()
                 
                 # Update campaign amount
                 donation.update_campaign_amount()
                 
-                messages.success(request, f"Manual refund of ${refund_amount} recorded. Please process the actual refund manually.")
+                messages.success(request, f"Manual refund of R{refund_amount} recorded. Please process the actual refund manually.")
             
         except Exception as e:
             logger.error(f"Refund processing error: {str(e)}")
@@ -795,8 +799,8 @@ def paypal_webhook(request):
                     donation.update_campaign_amount()
                     
                     # Send confirmation emails
-                    EmailNotificationService.send_donation_confirmation(donation)
-                    EmailNotificationService.send_donation_received_notification(donation)
+                    DonationReceiptEmailService.send_donation_confirmation(donation)
+                    DonationReceiptEmailService.send_donation_received_notification(donation)
                     
                     logger.info(f"PayPal payment completed for donation {custom_data}")
                 
@@ -806,7 +810,7 @@ def paypal_webhook(request):
                     donation.save()
                     
                     # Send failure notification
-                    EmailNotificationService.send_payment_failed_notification(donation)
+                    DonationReceiptEmailService.send_payment_failed_notification(donation)
                     
                     logger.info(f"PayPal payment failed for donation {custom_data}")
                 

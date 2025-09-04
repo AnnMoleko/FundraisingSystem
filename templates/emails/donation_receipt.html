@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Receipt - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .header p {
+            margin: 0;
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .receipt-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        .receipt-date {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .donation-details {
+            background: #f0f9ff;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+        }
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 1px solid #bfdbfe;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .detail-label {
+            color: #374151;
+            font-weight: 500;
+        }
+        .detail-value {
+            color: #1f2937;
+            font-weight: 600;
+        }
+        .amount-highlight {
+            color: #059669;
+            font-size: 24px;
+        }
+        .campaign-info {
+            background: #fefce8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #eab308;
+        }
+        .campaign-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+        .student-name {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .message-box {
+            background: #f0fdf4;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #22c55e;
+        }
+        .footer {
+            background: #f8fafc;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        .footer p {
+            margin: 5px 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        .btn {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 15px 0;
+        }
+        .tax-info {
+            background: #fef3c7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Donation Receipt</h1>
+            <p>Thank you for supporting education!</p>
+        </div>
+        
+        <div class="content">
+            <div class="receipt-header">
+                <div class="receipt-number">Receipt #{{ receipt_number }}</div>
+                <div class="receipt-date">{{ current_date|date:"F d, Y at g:i A" }}</div>
+            </div>
+            
+            <p>Dear {{ donor_name }},</p>
+            
+            <p>Thank you for your generous donation! This receipt confirms your contribution to support <strong>{{ campaign.student.full_name }}</strong>'s educational journey.</p>
+            
+            <div class="donation-details">
+                <h3 style="margin-top: 0; color: #1f2937;">Donation Details</h3>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Donation Amount:</span>
+                    <span class="detail-value">${{ donation.amount|floatformat:2 }}</span>
+                </div>
+                
+                {% if donation.processing_fee %}
+                <div class="detail-row">
+                    <span class="detail-label">Processing Fee:</span>
+                    <span class="detail-value">${{ donation.processing_fee|floatformat:2 }}</span>
+                </div>
+                {% endif %}
+                
+                <div class="detail-row">
+                    <span class="detail-label">Payment Method:</span>
+                    <span class="detail-value">{{ donation.get_payment_method_display }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Transaction ID:</span>
+                    <span class="detail-value">{{ donation.id }}</span>
+                </div>
+                
+                <div class="detail-row">
+                    <span class="detail-label">Total Paid:</span>
+                    <span class="detail-value amount-highlight">${{ total_amount|floatformat:2 }}</span>
+                </div>
+            </div>
+            
+            <div class="campaign-info">
+                <div class="campaign-title">{{ campaign.title }}</div>
+                <div class="student-name">Supporting: {{ campaign.student.full_name }}</div>
+                <p style="margin: 10px 0 0 0; font-size: 14px; color: #6b7280;">
+                    {{ campaign.description|truncatewords:25 }}
+                </p>
+            </div>
+            
+            {% if donation.message %}
+            <div class="message-box">
+                <h4 style="margin-top: 0; color: #1f2937;">Your Message:</h4>
+                <p style="margin-bottom: 0; font-style: italic;">"{{ donation.message }}"</p>
+            </div>
+            {% endif %}
+            
+            <div class="tax-info">
+                <strong>Tax Information:</strong> Please consult with your tax advisor regarding the deductibility of this donation. Keep this receipt for your records.
+            </div>
+            
+            <p>Your donation is making a real difference in {{ campaign.student.full_name }}'s educational journey. You can track the campaign progress and see the impact of your contribution:</p>
+            
+            <div style="text-align: center;">
+                <a href="{{ request.build_absolute_uri }}/campaigns/{{ campaign.id }}/" class="btn">View Campaign Progress</a>
+            </div>
+            
+            <p>If you have any questions about this donation or need assistance, please don't hesitate to contact our support team.</p>
+            
+            <p>With heartfelt gratitude,<br>
+            <strong>The {{ site_name }} Team</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>{{ site_name }}</strong> - Supporting Education, One Student at a Time</p>
+            <p>This is an official donation receipt. Please keep this email for your records.</p>
+            <p>Receipt generated on {{ current_date|date:"F d, Y" }}</p>
+        </div>
+    </div>
+</body>
+</html>
