@@ -4,164 +4,143 @@
 {% block title %}Admin Dashboard - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p class="mt-2 text-gray-600">Manage users, campaigns, and platform settings</p>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-[#1A2A80]">Admin Dashboard</h1>
+            <p class="mt-2 text-gray-600">Overview of platform activity and quick management tools.</p>
+        </div>
+        <div class="mt-4 sm:mt-0">
+            <a href="{% url 'admin_campaigns_list' %}" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-semibold rounded-full shadow-sm text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 3a1 1 0 100 2h-1a1 1 0 100 2h2a1 1 0 100-2h-1a1 1 0 100-2zm-2 5a1 1 0 100 2h-2a1 1 0 100 2h2a1 1 0 100-2h-1a1 1 0 100-2z"></path>
+                    <path fill-rule="evenodd" d="M12.928 2.072A8.001 8.001 0 001.072 12.928L12.928 1.072zM1.072 12.928A8.001 8.001 0 0012.928 1.072L1.072 12.928zM17 10a7 7 0 11-14 0 7 7 0 0114 0z" clip-rule="evenodd"></path>
+                </svg>
+                Review Campaigns
+            </a>
+        </div>
     </div>
-
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Users</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ total_users }}</dd>
-                        </dl>
-                    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#D1F7E9] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#2E8B57]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Total Users</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ total_users }}</p>
                 </div>
             </div>
         </div>
-
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Campaigns</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ total_campaigns }}</dd>
-                        </dl>
-                    </div>
+    
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#FEE2E2] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#DC2626]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM5 8a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zM5 12a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Total Campaigns</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ total_campaigns }}</p>
                 </div>
             </div>
         </div>
-
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"></path>
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Raised</dt>
-                            <dd class="text-lg font-medium text-gray-900">R{{ total_raised|floatformat:2 }}</dd>
-                        </dl>
-                    </div>
+    
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#E0E7FF] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#3B38A0]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM5 8a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Funds Raised</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">R{{ total_raised|floatformat:2 }}</p>
                 </div>
             </div>
         </div>
-
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Pending Reviews</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ pending_campaigns }}</dd>
-                        </dl>
-                    </div>
+    
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#FFFBEB] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Pending Reviews</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ pending_campaigns }}</p>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Quick Actions -->
-    <div class="bg-white shadow rounded-lg mb-8">
-        <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Quick Actions</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <a href="{% url 'admin_campaigns_list' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg text-center">
+    
+    ---
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-1 bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="text-lg font-bold text-[#1A2A80] mb-4">Quick Actions</h3>
+            <div class="space-y-4">
+                <a href="{% url 'admin_campaigns_list' %}" class="w-full flex items-center justify-center px-4 py-3 border border-transparent text-sm font-medium rounded-full shadow-sm text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
                     Review Campaigns
                 </a>
-                <a href="/admin/" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-center">
-                    Django Admin
+                <a href="/admin/" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
+                    Django Admin Panel
                 </a>
-                <a href="{% url 'campaigns_list' %}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg text-center">
+                <a href="{% url 'campaigns_list' %}" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                     View All Campaigns
                 </a>
-                <a href="{% url 'donations_list' %}" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg text-center">
+                <a href="{% url 'donations_list' %}" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 text-sm font-medium rounded-full shadow-sm text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                     View All Donations
                 </a>
-            
             </div>
         </div>
-    </div>
 
-    <!-- Pending Campaigns -->
-    {% if campaigns_for_approval %}
-    <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Campaigns Pending Approval</h3>
-            <div class="space-y-4">
-                {% for campaign in campaigns_for_approval %}
-                <div class="border border-gray-200 rounded-lg p-4">
-                    <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-medium text-gray-900">{{ campaign.title }}</h4>
-                            <p class="text-sm text-gray-500 mt-1">by {{ campaign.student.full_name|default:campaign.student.username }}</p>
-                            <p class="text-sm text-gray-600 mt-2">Goal: R{{ campaign.goal }}</p>
-                        </div>
-                        <div class="ml-4 flex space-x-2">
-                            <a href="{% url 'campaign_detail' campaign.pk %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded text-sm">
-                                View
-                            </a>
-                            <a href="{% url 'admin_campaign_approve' campaign.pk %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm">
-                                Approve
-                            </a>
-                            <a href="{% url 'admin_campaign_reject' campaign.pk %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-sm">
-                                Reject
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+        <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-[#1A2A80]">Campaigns Pending Approval ({{ pending_campaigns }})</h3>
+                {% if pending_campaigns > 5 %}
+                <a href="{% url 'admin_campaigns_list' %}" class="text-sm text-[#3B38A0] hover:text-opacity-80 font-medium transition-colors duration-200">
+                    View all &rarr;
+                </a>
+                {% endif %}
             </div>
             
-            {% if pending_campaigns > 5 %}
-            <div class="mt-4 text-center">
-                <a href="{% url 'admin_campaigns_list' %}" class="text-blue-600 hover:text-blue-500 font-medium">
-                    View all {{ pending_campaigns }} pending campaigns →
-                </a>
-            </div>
+            {% if campaigns_for_approval %}
+                <ul class="divide-y divide-gray-200">
+                {% for campaign in campaigns_for_approval %}
+                    <li class="py-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-lg font-semibold text-gray-900 truncate">{{ campaign.title }}</h4>
+                                <p class="text-sm text-gray-500 mt-1">by {{ campaign.student.full_name|default:campaign.student.username }}</p>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <span class="inline-flex items-center rounded-full px-3 py-0.5 text-sm font-medium bg-[#E0E7FF] text-[#3B38A0] mr-2">
+                                    Goal: R{{ campaign.goal }}
+                                </span>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <a href="{% url 'campaign_detail' campaign.pk %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-full shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
+                                    View
+                                </a>
+                                <a href="{% url 'admin_campaign_approve' campaign.pk %}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200 ml-2">
+                                    Approve
+                                </a>
+                                <a href="{% url 'admin_campaign_reject' campaign.pk %}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 ml-2">
+                                    Reject
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <div class="text-center py-8">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-semibold text-gray-900">No pending campaigns</h3>
+                    <p class="mt-1 text-sm text-gray-500">All campaigns have been reviewed.</p>
+                </div>
             {% endif %}
         </div>
     </div>
-    {% else %}
-    <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6 text-center">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-2">No Pending Campaigns</h3>
-            <p class="text-gray-600">All campaigns have been reviewed.</p>
-        </div>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}

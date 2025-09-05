@@ -4,34 +4,41 @@
 {% block title %}Delete Campaign - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-4">Delete Campaign</h1>
+<div class="max-w-md mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="p-8 md:p-10 text-center">
+            <h1 class="text-3xl font-extrabold text-[#1A2A80] mb-4">Delete Campaign</h1>
             
-            <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
-                <p class="font-bold">Warning:</p>
-                <p>You are about to delete the campaign "{{ campaign.title }}". This action cannot be undone.</p>
+            <div class="bg-red-50 border-2 border-red-400 text-red-700 p-6 rounded-2xl mb-6 flex items-start space-x-4">
+                <svg class="w-6 h-6 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.332a.5.5 0 01.442-.294h4.482a.5.5 0 01.44.294L18 8.136V16a2 2 0 01-2 2H4a2 2 0 01-2-2V8.136l5.757-4.804zM10 10a.5.5 0 000 1h2a.5.5 0 000-1h-2z" clip-rule="evenodd"></path></svg>
+                <div>
+                    <h2 class="font-bold text-lg mb-1">Are you sure? This is permanent.</h2>
+                    <p class="text-sm">You are about to delete the campaign "<strong class="text-red-800">{{ campaign.title }}</strong>". This action cannot be undone.</p>
+                </div>
             </div>
             
             {% if campaign.current_amount > 0 %}
-                <div class="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded mb-4">
-                    <p class="font-bold">Important:</p>
-                    <p>
-                        This campaign has already received ${{ campaign.current_amount }} in donations. 
-                        Deleting the campaign will not refund donations, but donors will no longer be able to see what they contributed to.
-                    </p>
+                <div class="bg-[#EAF6F6] border border-[#2B6D6D] text-[#2B6D6D] p-6 rounded-2xl mb-8 flex items-start space-x-4">
+                    <svg class="w-6 h-6 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2h2a1 1 0 001-1V9a1 1 0 10-2 0V9z" clip-rule="evenodd"></path></svg>
+                    <div>
+                        <h2 class="font-bold text-lg mb-1">This campaign has donations.</h2>
+                        <p class="text-sm">
+                            This campaign has already received <strong class="text-[#1A2A80]">R{{ campaign.current_amount }}</strong> in donations. 
+                            Deleting it will not refund donations, and your supporters will no longer be able to see what they contributed to.
+                        </p>
+                    </div>
                 </div>
             {% endif %}
             
             <form method="post" class="mt-6">
                 {% csrf_token %}
                 
-                <div class="flex items-center justify-end space-x-3">
-                    <a href="{% url 'campaign_detail' campaign.id %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="{% url 'campaign_detail' campaign.id %}" class="inline-flex items-center justify-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                         Cancel
                     </a>
-                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <button type="submit" class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         Delete Campaign
                     </button>
                 </div>

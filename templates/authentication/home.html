@@ -3,157 +3,138 @@
 
 {% block title %}Home - EduFund{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-{% endblock %}
-
 {% block content %}
-<!-- Hero Section -->
-<div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                Fund Your Educational Dreams
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-                Connect with generous donors who believe in the power of education. 
-                Start your fundraising campaign today and make your academic goals a reality.
-            </p>
-            <div class="space-x-4">
-                {% if not user.is_authenticated %}
-                    <a href="{% url 'signup' %}" class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
-                        Get Started
-                    </a>
-                    <a href="{% url 'login' %}" class="border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-blue-600 transition duration-300">
-                        Login
-                    </a>
-                {% else %}
-                    <a href="{% url 'dashboard' %}" class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
-                        Go to Dashboard
-                    </a>
-                {% endif %}
+<header class="relative overflow-hidden bg-white py-24 sm:py-32">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-center">
+            <div class="lg:col-span-6 xl:col-span-5 text-center lg:text-left">
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-[#1A2A80] leading-tight mb-4">
+                    Fund Your Educational Dreams 🎓
+                </h1>
+                <p class="text-lg md:text-xl text-gray-600 max-w-lg mx-auto lg:mx-0 mb-8">
+                    Connect with generous donors who believe in the power of education. Start your fundraising campaign today and make your academic goals a reality.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'signup' %}" class="w-full sm:w-auto px-8 py-3 rounded-full text-sm font-semibold transition-colors duration-300 bg-[#3B38A0] text-white hover:bg-opacity-90 shadow-lg">
+                            Get Started
+                        </a>
+                        <a href="{% url 'login' %}" class="w-full sm:w-auto px-8 py-3 rounded-full text-sm font-semibold transition-colors duration-300 border border-gray-300 text-[#1A2A80] hover:bg-gray-200">
+                            Login
+                        </a>
+                    {% else %}
+                        <a href="{% url 'dashboard' %}" class="w-full sm:w-auto px-8 py-3 rounded-full text-sm font-semibold transition-colors duration-300 bg-[#3B38A0] text-white hover:bg-opacity-90 shadow-lg">
+                            Go to Dashboard
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mt-12 lg:mt-0 lg:col-span-6 xl:col-span-7 flex justify-center lg:justify-end">
+                <div class="relative w-full max-w-xl lg:max-w-none">
+                    <img src="{% static 'images/students-working-together-project.jpg' %}" alt="Students working together" class="rounded-3xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-gray-100/50 to-transparent rounded-3xl"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Features Section -->
-<div class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                How EduFund Works
+</header>
+---
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#1A2A80] mb-4">
+                How EduFund Works 💡
             </h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
                 Simple steps to connect students with donors and make education accessible for everyone.
             </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- For Students -->
-            <div class="text-center p-6 bg-blue-50 rounded-lg">
-                <div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="text-center p-8 bg-white rounded-2xl shadow-lg border border-gray-200 transform transition-transform duration-300 hover:scale-105">
+                <div class="w-16 h-16 bg-[#3B38A0] rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">For Students</h3>
-                <p class="text-gray-600 mb-4">Create your profile, share your educational goals, and start your fundraising campaign.</p>
-                <ul class="text-sm text-gray-500 space-y-1">
-                    <li>✓ Create compelling campaigns</li>
-                    <li>✓ Share your story</li>
-                    <li>✓ Track your progress</li>
-                </ul>
+                <h3 class="text-xl font-semibold text-[#1A2A80] mb-3">Create Your Profile</h3>
+                <p class="text-gray-600 mb-4">
+                    Create your profile, share your educational goals, and start your fundraising campaign.
+                </p>
             </div>
 
-            <!-- For Donors -->
-            <div class="text-center p-6 bg-green-50 rounded-lg">
-                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            <div class="text-center p-8 bg-white rounded-2xl shadow-lg border border-gray-200 transform transition-transform duration-300 hover:scale-105">
+                <div class="w-16 h-16 bg-[#3B38A0] rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zM21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">For Donors</h3>
-                <p class="text-gray-600 mb-4">Browse student campaigns, choose causes you care about, and make a difference.</p>
-                <ul class="text-sm text-gray-500 space-y-1">
-                    <li>✓ Browse verified campaigns</li>
-                    <li>✓ Secure donations</li>
-                    <li>✓ Track impact</li>
-                </ul>
+                <h3 class="text-xl font-semibold text-[#1A2A80] mb-3">Find a Cause</h3>
+                <p class="text-gray-600 mb-4">
+                    Browse verified student campaigns and find a cause that you are passionate about.
+                </p>
             </div>
 
-            <!-- Admin Oversight -->
-            <div class="text-center p-6 bg-purple-50 rounded-lg">
-                <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            <div class="text-center p-8 bg-white rounded-2xl shadow-lg border border-gray-200 transform transition-transform duration-300 hover:scale-105">
+                <div class="w-16 h-16 bg-[#3B38A0] rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </div>
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">Verified & Safe</h3>
-                <p class="text-gray-600 mb-4">All campaigns are verified by our admin team to ensure authenticity and transparency.</p>
-                <ul class="text-sm text-gray-500 space-y-1">
-                    <li>✓ Campaign verification</li>
-                    <li>✓ Secure transactions</li>
-                    <li>✓ Transparent reporting</li>
-                </ul>
+                <h3 class="text-xl font-semibold text-[#1A2A80] mb-3">Make an Impact</h3>
+                <p class="text-gray-600 mb-4">
+                    Make a secure donation and directly contribute to a student's educational journey.
+                </p>
             </div>
         </div>
     </div>
-</div>
+</section>
+---
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div class="p-6 bg-gray-50 rounded-lg shadow-sm">
+                <div class="text-4xl md:text-5xl font-extrabold text-[#3B38A0] mb-2">1,000+</div>
+                <p class="text-gray-600 text-lg">Students Helped</p>
+            </div>
 
-<!-- Statistics Section -->
-<div class="py-16 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Making Education Accessible
-            </h2>
-        </div>
+            <div class="p-6 bg-gray-50 rounded-lg shadow-sm">
+                <div class="text-4xl md:text-5xl font-extrabold text-[#3B38A0] mb-2">R500K+</div>
+                <p class="text-gray-600 text-lg">Funds Raised</p>
+            </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="text-center">
-                <div class="text-4xl font-bold text-blue-600 mb-2">1,000+</div>
-                <div class="text-gray-600">Students Helped</div>
+            <div class="p-6 bg-gray-50 rounded-lg shadow-sm">
+                <div class="text-4xl md:text-5xl font-extrabold text-[#3B38A0] mb-2">2,500+</div>
+                <p class="text-gray-600 text-lg">Generous Donors</p>
             </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-green-600 mb-2">R500K+</div>
-                <div class="text-gray-600">Funds Raised</div>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-purple-600 mb-2">2,500+</div>
-                <div class="text-gray-600">Generous Donors</div>
-            </div>
-            <div class="text-center">
-                <div class="text-4xl font-bold text-orange-600 mb-2">95%</div>
-                <div class="text-gray-600">Success Rate</div>
+
+            <div class="p-6 bg-gray-50 rounded-lg shadow-sm">
+                <div class="text-4xl md:text-5xl font-extrabold text-[#3B38A0] mb-2">95%</div>
+                <p class="text-gray-600 text-lg">Success Rate</p>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Call to Action -->
-<div class="py-16 bg-blue-600">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Start Your Journey?
+</section>
+---
+<section class="py-20 bg-[#3B38A0] text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Ready to Start Your Journey? ✨
         </h2>
-        <p class="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+        <p class="text-lg md:text-xl max-w-2xl mx-auto mb-10 opacity-90">
             Join thousands of students and donors who are making education dreams come true.
         </p>
         {% if not user.is_authenticated %}
-            <div class="space-x-4">
-                <a href="{% url 'signup' %}?role=student" class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="{% url 'signup' %}?role=student" class="w-full sm:w-auto px-8 py-4 rounded-full text-sm font-semibold transition-colors duration-300 bg-white text-[#3B38A0] hover:bg-gray-100 shadow-lg">
                     I'm a Student
                 </a>
-                <a href="{% url 'signup' %}?role=donor" class="border-2 border-white text-white font-bold py-3 px-8 rounded-lg hover:bg-white hover:text-blue-600 transition duration-300">
+                <a href="{% url 'signup' %}?role=donor" class="w-full sm:w-auto px-8 py-4 rounded-full text-sm font-semibold transition-colors duration-300 border-2 border-white text-white hover:bg-white hover:text-[#3B38A0]">
                     I'm a Donor
                 </a>
             </div>
         {% endif %}
     </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/main.js' %}"></script>
+</section>
 {% endblock %}

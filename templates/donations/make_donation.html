@@ -4,24 +4,28 @@
 {% block title %}Make a Donation - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-2">Make a Donation</h1>
-            <p class="text-gray-600 mb-6">You are supporting: <strong>{{ campaign.title }}</strong></p>
-            
+<div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="p-8 md:p-10 bg-gray-50 border-b border-gray-200 text-center">
+            <h1 class="text-3xl font-extrabold text-[#1A2A80] mb-2">Make a Donation</h1>
+            <p class="text-gray-600">You are supporting: <strong>{{ campaign.title }}</strong></p>
+        </div>
+        
+        <div class="p-8 md:p-10">
             <form method="post" class="space-y-6">
                 {% csrf_token %}
                 
                 {% if form.errors %}
-                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                        <p class="font-bold">Please correct the following errors:</p>
-                        {{ form.errors }}
+                    <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl">
+                        <p class="font-bold mb-1">Please correct the following errors:</p>
+                        {% for field, errors in form.errors.items %}
+                            <p class="text-sm">- {{ errors|join:", " }}</p>
+                        {% endfor %}
                     </div>
                 {% endif %}
                 
                 <div>
-                    <label for="{{ form.amount.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="{{ form.amount.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                         Donation Amount (R)*
                     </label>
                     {{ form.amount }}
@@ -29,37 +33,61 @@
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method*</label>
-                    <div class="space-y-2">
+                    <div class="space-y-3">
                         {% for radio in form.payment_method %}
-                            <div class="flex items-center border border-gray-200 rounded-md p-3 hover:bg-gray-50">
-                                {{ radio }}
-                                <label for="{{ radio.id_for_label }}" class="ml-3 flex flex-grow cursor-pointer">
-                                    <span>{{ radio.choice_label }}</span>
+                            <div class="flex items-center border border-gray-200 rounded-xl p-4 cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                                <div class="flex items-center h-5">
+                                    {{ radio.tag }}
+                                </div>
+                                <label for="{{ radio.id_for_label }}" class="ml-4 flex flex-grow text-sm cursor-pointer">
+                                    <span class="font-medium text-gray-700">{{ radio.choice_label }}</span>
                                 </label>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
                 
-                <div class="flex items-start">
-                    {{ form.anonymous }}
-                    <label for="{{ form.anonymous.id_for_label }}" class="ml-3 block text-sm cursor-pointer">
-                        Make this donation anonymous
-                        <p class="text-xs text-gray-500">Your name will not be displayed publicly.</p>
+                <div>
+                    <label for="{{ form.message.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ form.message.label }}
+                    </label>
+                    {{ form.message }}
+                </div>
+                
+                <div class="flex items-start pt-4 space-x-6">
+                    <div class="flex items-start">
+                        {{ form.anonymous }}
+                        <label for="{{ form.anonymous.id_for_label }}" class="ml-3 block text-sm cursor-pointer">
+                            <span class="font-medium text-gray-700">Make this donation anonymous</span>
+                            <p class="text-xs text-gray-500">Your name will not be displayed publicly.</p>
+                        </label>
+                    </div>
+                    <div class="flex items-start">
+                        {{ form.is_recurring }}
+                        <label for="{{ form.is_recurring.id_for_label }}" class="ml-3 block text-sm cursor-pointer">
+                            <span class="font-medium text-gray-700">Make this a recurring donation</span>
+                            <p class="text-xs text-gray-500">Donate this amount automatically each month.</p>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-5 rounded-xl flex items-start space-x-3">
+                    <div class="mt-1">
+                        {{ form.cover_fees }}
+                    </div>
+                    <label for="{{ form.cover_fees.id_for_label }}" class="flex-grow cursor-pointer">
+                        <span class="font-bold text-blue-700">Cover processing fees</span>
+                        <p class="text-sm text-blue-600">
+                            By adding a small amount, you ensure that 100% of your donation goes directly to the student.
+                        </p>
                     </label>
                 </div>
                 
-                <div class="bg-blue-50 p-4 rounded-md">
-                    <p class="text-sm text-blue-700">
-                        <strong>100% of your donation</strong> goes directly to supporting this student's education.
-                    </p>
-                </div>
-                
-                <div class="flex items-center justify-end space-x-3">
-                    <a href="{% url 'campaign_detail' campaign.id %}" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-100">
+                    <a href="{% url 'campaign_detail' campaign.id %}" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                         Cancel
                     </a>
-                    <button type="submit" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B38A0]">
                         Continue to Payment
                     </button>
                 </div>

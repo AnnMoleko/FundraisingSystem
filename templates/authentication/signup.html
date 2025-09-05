@@ -3,96 +3,99 @@
 
 {% block title %}Sign Up - EduFund{% endblock %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/login.css' %}">
-{% endblock %}
-
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+<div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-10 p-10 bg-white rounded-3xl shadow-2xl">
         <div>
-            <div class="mx-auto h-12 w-12 flex items-center justify-center">
-                <img class="h-12 w-auto" src="{% static 'images/edufunglogo.png' %}" alt="EduFund">
+            <div class="mx-auto h-16 w-16 flex items-center justify-center">
+                <img class="h-16 w-auto" src="{% static 'images/EduFund.png' %}" alt="EduFund">
             </div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Create your account
+            <h2 class="mt-8 text-center text-4xl font-extrabold text-[#1A2A80]">
+                Create Your Account
             </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Or
-                <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500">
-                    sign in to your existing account
+            <p class="mt-2 text-center text-sm text-gray-500">
+                Already have an account? 
+                <a href="{% url 'login' %}" class="font-medium text-[#3B38A0] hover:text-opacity-80 transition-colors duration-200">
+                    Sign in here.
                 </a>
             </p>
         </div>
         
-        <form class="mt-8 space-y-6" method="post">
+        <form class="space-y-6" method="post">
             {% csrf_token %}
             <div class="space-y-4">
                 <div>
                     <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                    <input id="full_name" name="full_name" type="text" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                           placeholder="Enter your full name">
+                    <div class="mt-1">
+                        <input id="full_name" name="full_name" type="text" required 
+                               class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#3B38A0] focus:border-[#3B38A0] sm:text-sm transition duration-150 ease-in-out" 
+                               placeholder="Enter your full name">
+                    </div>
                 </div>
 
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                    <input id="username" name="username" type="text" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                           placeholder="Choose a username">
+                    <div class="mt-1">
+                        <input id="username" name="username" type="text" required 
+                               class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#3B38A0] focus:border-[#3B38A0] sm:text-sm transition duration-150 ease-in-out" 
+                               placeholder="Choose a username">
+                    </div>
                 </div>
 
                 <div>
                     <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                    <input id="email" name="email" type="email" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                           placeholder="Enter your email">
+                    <div class="mt-1">
+                        <input id="email" name="email" type="email" required 
+                               class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#3B38A0] focus:border-[#3B38A0] sm:text-sm transition duration-150 ease-in-out" 
+                               placeholder="Enter your email">
+                    </div>
                 </div>
 
                 <div>
                     <label for="role" class="block text-sm font-medium text-gray-700">I am a</label>
-                    <select id="role" name="role" required 
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                        <option value="">Select your role</option>
-                        <option value="student" {% if request.GET.role == 'student' %}selected{% endif %}>Student - I need funding for education</option>
-                        <option value="donor" {% if request.GET.role == 'donor' %}selected{% endif %}>Donor - I want to help students</option>
-                    </select>
+                    <div class="mt-1">
+                        <select id="role" name="role" required 
+                               class="block w-full px-4 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-[#3B38A0] focus:border-[#3B38A0] sm:text-sm transition duration-150 ease-in-out">
+                            <option value="">Select your role</option>
+                            <option value="student" {% if request.GET.role == 'student' %}selected{% endif %}>Student - I need funding for education</option>
+                            <option value="donor" {% if request.GET.role == 'donor' %}selected{% endif %}>Donor - I want to help students</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
                     <label for="password1" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input id="password1" name="password1" type="password" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                           placeholder="Create a password">
+                    <div class="mt-1">
+                        <input id="password1" name="password1" type="password" required 
+                               class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#3B38A0] focus:border-[#3B38A0] sm:text-sm transition duration-150 ease-in-out" 
+                               placeholder="Create a password">
+                    </div>
                 </div>
 
                 <div>
                     <label for="password2" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input id="password2" name="password2" type="password" required 
-                           class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" 
-                           placeholder="Confirm your password">
+                    <div class="mt-1">
+                        <input id="password2" name="password2" type="password" required 
+                               class="appearance-none block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#3B38A0] focus:border-[#3B38A0] sm:text-sm transition duration-150 ease-in-out" 
+                               placeholder="Confirm your password">
+                    </div>
                 </div>
             </div>
 
             <div class="flex items-center">
                 <input id="terms" name="terms" type="checkbox" required
-                       class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                       class="h-4 w-4 text-[#3B38A0] focus:ring-[#3B38A0] border-gray-300 rounded">
                 <label for="terms" class="ml-2 block text-sm text-gray-900">
                     I agree to the 
-                    <a href="#" class="text-blue-600 hover:text-blue-500">Terms of Service</a> 
+                    <a href="#" class="text-[#3B38A0] hover:text-opacity-80 transition-colors duration-200">Terms of Service</a> 
                     and 
-                    <a href="#" class="text-blue-600 hover:text-blue-500">Privacy Policy</a>
+                    <a href="#" class="text-[#3B38A0] hover:text-opacity-80 transition-colors duration-200">Privacy Policy</a>
                 </label>
             </div>
 
             <div>
                 <button type="submit" 
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                        </svg>
-                    </span>
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-full shadow-sm text-sm font-semibold text-white bg-[#3B38A0] hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B38A0] transition-colors duration-200">
                     Create Account
                 </button>
             </div>

@@ -4,154 +4,121 @@
 {% block title %}{{ campaign.title }} - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="md:flex">
-            <!-- Campaign Image -->
-            <div class="md:w-2/5">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="md:grid md:grid-cols-5 lg:grid-cols-3">
+            <div class="md:col-span-2 lg:col-span-1">
                 {% if campaign.image %}
-                    <img class="w-full h-64 md:h-full object-cover" src="{{ campaign.image.url }}" alt="{{ campaign.title }}">
+                    <img class="w-full h-96 md:h-full object-cover rounded-t-3xl md:rounded-l-3xl md:rounded-t-none" src="{{ campaign.image.url }}" alt="{{ campaign.title }}">
                 {% else %}
-                    <div class="w-full h-64 md:h-full bg-gray-200 flex items-center justify-center">
-                        <span class="text-gray-500">No image</span>
+                    <div class="w-full h-96 md:h-full bg-gray-100 flex items-center justify-center rounded-t-3xl md:rounded-l-3xl md:rounded-t-none">
+                        <svg class="h-24 w-24 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L15 13.172v1.828a2 2 0 002 2h2a2 2 0 002-2v-1.828l-3.586-3.586a2 2 0 00-2.828 0L9 11.172V9.828a2 2 0 00-2-2H4a2 2 0 00-2 2v2.828a2 2 0 00.586 1.414L3 16h1z"></path></svg>
                     </div>
                 {% endif %}
             </div>
             
-            <!-- Campaign Details -->
-            <div class="md:w-3/5 p-6">
-                <div class="flex justify-between items-start mb-4">
-                    <h1 class="text-3xl font-bold text-gray-900">{{ campaign.title }}</h1>
-                    {% if campaign.approved %}
-                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                            Approved
-                        </span>
-                    {% else %}
-                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                            Pending Approval
-                        </span>
-                    {% endif %}
-                </div>
-                
-                <div class="text-sm text-gray-500 mb-6">
-                    Created by {{ campaign.student.full_name|default:campaign.student.username }} 
-                    on {{ campaign.created_at|date:"F d, Y" }}
-                </div>
-                
-                <div class="mb-6">
-                    <div class="flex justify-between text-sm text-gray-500 mb-2">
-                        <span>Progress</span>
-                        <span>R{{ campaign.current_amount }} of R{{ campaign.goal }} ({{ campaign.progress_percentage }}%)</span>
+            <div class="md:col-span-3 lg:col-span-2 p-8 md:p-10 flex flex-col justify-between">
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
+                        <h1 class="text-3xl lg:text-4xl font-extrabold text-[#1A2A80]">{{ campaign.title }}</h1>
+                        {% if campaign.approved %}
+                            <span class="mt-2 sm:mt-0 bg-[#EAF6F6] text-[#2B6D6D] text-xs font-medium px-4 py-1.5 rounded-full">
+                                <span class="h-2 w-2 rounded-full inline-block mr-1 bg-[#2B6D6D]"></span> Approved
+                            </span>
+                        {% else %}
+                            <span class="mt-2 sm:mt-0 bg-[#F0ECFA] text-[#5A67D8] text-xs font-medium px-4 py-1.5 rounded-full">
+                                <span class="h-2 w-2 rounded-full inline-block mr-1 bg-[#5A67D8]"></span> Pending Approval
+                            </span>
+                        {% endif %}
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-3">
-                        <div class="bg-blue-600 h-3 rounded-full" style="width: {{ campaign.progress_percentage }}%"></div>
+                    
+                    <div class="text-sm text-gray-500 mb-6">
+                        Created by {{ campaign.student.full_name|default:campaign.student.username }} on {{ campaign.created_at|date:"F d, Y" }}
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="flex justify-between text-base font-semibold text-[#1A2A80] mb-2">
+                            <span>R{{ campaign.current_amount|floatformat:0 }} raised</span>
+                            <span>R{{ campaign.goal|floatformat:0 }} goal</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-3">
+                            <div class="bg-gradient-to-r from-[#5A67D8] to-[#2B6D6D] h-3 rounded-full" 
+                                 style="width: {{ campaign.progress_percentage }}%"></div>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-2">{{ campaign.progress_percentage|floatformat:0 }}% funded</p>
+                    </div>
+                    
+                    <div class="prose max-w-none text-gray-700 mb-8">
+                        <p>{{ campaign.description|linebreaks }}</p>
                     </div>
                 </div>
-                
-                <div class="prose max-w-none mb-8">
-                    <p>{{ campaign.description|linebreaks }}</p>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div class="flex flex-wrap gap-4">
+
+                <div class="flex flex-wrap gap-3">
                     {% if user.role == 'donor' and campaign.approved %}
-                        <a href="{% url 'make_donation' campaign.id %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                        <a href="{% url 'make_donation' campaign.id %}" class="inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
                             Donate Now
                         </a>
                     {% elif user.role == 'student' and campaign.student == user %}
-                        <a href="{% url 'campaign_edit' campaign.id %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
+                        <a href="{% url 'campaign_edit' campaign.id %}" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                             Edit Campaign
                         </a>
-                        <a href="{% url 'campaign_delete' campaign.id %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded">
+                        <a href="{% url 'campaign_delete' campaign.id %}" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-red-600 bg-white hover:bg-red-50 transition-colors duration-200">
                             Delete Campaign
                         </a>
                     {% elif user.role == 'admin' and not campaign.approved %}
-                        <a href="{% url 'admin_campaign_approve' campaign.id %}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded">
-                            Approve Campaign
+                        <a href="{% url 'admin_campaign_approve' campaign.id %}" class="inline-flex items-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-green-600 hover:bg-green-700 transition-colors duration-200">
+                            Approve
                         </a>
-                        <a href="{% url 'admin_campaign_reject' campaign.id %}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded">
-                            Reject Campaign
+                        <a href="{% url 'admin_campaign_reject' campaign.id %}" class="inline-flex items-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-red-600 hover:bg-red-700 transition-colors duration-200">
+                            Reject
                         </a>
                     {% endif %}
                     
-                    <a href="{% url 'campaigns_list' %}" class="border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold py-2 px-6 rounded">
+                    <a href="{% url 'campaigns_list' %}" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                         Back to Campaigns
                     </a>
                 </div>
             </div>
         </div>
         
-        <!-- Donations Section if the campaign is approved -->
-        {% if campaign.approved %}
-            <div class="p-6 border-t">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Donations</h2>
-                
-                {% if user.role == 'donor' %}
-                    <!-- Donation Form for donors -->
-                    <div class="bg-gray-50 p-6 rounded-lg mb-8">
-                        <h3 class="text-xl font-semibold mb-4">Make a Donation</h3>
-                        <form action="{% url 'make_donation' campaign.id %}" method="post" class="space-y-4">
-                            {% csrf_token %}
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Amount (R)</label>
-                                {{ donation_form.amount }}
-                            </div>
-                            
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Payment Method</label>
-                                <div class="space-y-2">
-                                    {% for radio in donation_form.payment_method %}
-                                        <div class="flex items-center">
-                                            {{ radio }}
-                                            <label for="{{ radio.id_for_label }}" class="ml-2">{{ radio.choice_label }}</label>
-                                        </div>
-                                    {% endfor %}
+        {% if campaign.approved and donations %}
+        <div class="p-8 md:p-10 border-t border-gray-200">
+            <h2 class="text-2xl font-bold text-[#1A2A80] mb-6">Recent Supporters</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% for donation in donations %}
+                    <div class="flex items-center p-5 border border-gray-200 rounded-2xl bg-gray-50">
+                        <div class="flex-shrink-0 mr-4">
+                            {% if donation.anonymous %}
+                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                                    <svg class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                 </div>
-                            </div>
-                            
-                            <div class="flex items-center">
-                                {{ donation_form.anonymous }}
-                                <label for="{{ donation_form.anonymous.id_for_label }}" class="ml-2 text-sm text-gray-700">
-                                    Make this donation anonymous
-                                </label>
-                            </div>
-                            
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
-                                Donate Now
-                            </button>
-                        </form>
-                    </div>
-                {% endif %}
-                
-                <!-- List of donations -->
-                {% if donations %}
-                    <div class="space-y-4">
-                        <h3 class="text-xl font-semibold">Recent Supporters</h3>
-                        
-                        {% for donation in donations %}
-                            <div class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                                <div>
-                                    <p class="font-medium">
-                                        {% if donation.anonymous %}
-                                            Anonymous Donor
-                                        {% else %}
-                                            {{ donation.donor.full_name|default:donation.donor.username }}
-                                        {% endif %}
-                                    </p>
-                                    <p class="text-sm text-gray-500">{{ donation.created_at|date:"F d, Y" }}</p>
+                            {% else %}
+                                <div class="w-12 h-12 rounded-full bg-[#EAF6F6] flex items-center justify-center text-[#2B6D6D] font-bold text-lg">
+                                    {{ donation.donor.full_name|default:donation.donor.username|first|upper }}
                                 </div>
-                                <div class="text-right">
-                                    <p class="text-green-600 font-semibold">R{{ donation.amount }}</p>
-                                </div>
-                            </div>
-                        {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="flex-grow">
+                            <p class="font-semibold text-gray-900">
+                                {% if donation.anonymous %}
+                                    Anonymous Donor
+                                {% else %}
+                                    {{ donation.donor.full_name|default:donation.donor.username }}
+                                {% endif %}
+                            </p>
+                            <p class="text-sm text-gray-500">{{ donation.created_at|date:"F d, Y" }}</p>
+                        </div>
+                        <div class="text-right flex-shrink-0">
+                            <p class="text-lg font-bold text-[#2B6D6D]">R{{ donation.amount }}</p>
+                        </div>
                     </div>
-                {% else %}
-                    <div class="text-center py-6 bg-gray-50 rounded-lg">
-                        <p class="text-gray-500">No donations yet. Be the first to support this campaign!</p>
-                    </div>
-                {% endif %}
+                {% endfor %}
             </div>
+        </div>
+        {% elif campaign.approved %}
+        <div class="p-8 md:p-10 border-t border-gray-200 text-center">
+            <p class="text-gray-500">No donations have been made to this campaign yet. Be the first to support!</p>
+        </div>
         {% endif %}
     </div>
 </div>

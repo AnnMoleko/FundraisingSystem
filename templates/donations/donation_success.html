@@ -4,246 +4,193 @@
 {% block title %}Donation Successful - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="p-8 text-center">
-            <!-- Success Animation -->
-            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
-                <svg class="h-8 w-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="p-8 md:p-12 text-center">
+            <div class="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-[#EAF6F6] mb-6 animate-scale-in">
+                <svg class="h-10 w-10 text-[#2B6D6D]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                 </svg>
             </div>
             
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Thank You!</h1>
-            <p class="text-xl text-gray-600 mb-8">Your donation has been successfully processed</p>
+            <h1 class="text-4xl font-extrabold text-[#1A2A80] mb-2">Thank You!</h1>
+            <p class="text-xl text-gray-600 mb-8">Your donation has been successfully processed.</p>
             
-            <!-- Donation Details Card -->
-            <div class="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 mb-8 text-left">
-                <h2 class="text-lg font-semibold text-gray-900 mb-4">Donation Details</h2>
+            <div class="bg-gradient-to-br from-[#E0E7FF] to-[#D1F7E9] border border-[#3B38A0] rounded-2xl p-6 md:p-8 mb-8 text-left shadow-inner">
+                <h2 class="text-xl font-bold text-[#1A2A80] mb-4">Donation Details</h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Amount Donated</dt>
-                        <dd class="text-lg font-bold text-green-600">R{{ donation.amount }}</dd>
+                        <dd class="text-2xl font-bold text-[#2B6D6D] mt-1">R{{ donation.amount }}</dd>
                     </div>
                     
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Campaign</dt>
-                        <dd class="text-sm text-gray-900">{{ donation.campaign.title }}</dd>
+                        <dd class="text-base text-gray-900 font-semibold mt-1">{{ donation.campaign.title }}</dd>
                     </div>
                     
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Student</dt>
-                        <dd class="text-sm text-gray-900">{{ donation.campaign.student.full_name|default:donation.campaign.student.username }}</dd>
+                        <dd class="text-base text-gray-900 mt-1">{{ donation.campaign.student.full_name|default:donation.campaign.student.username }}</dd>
                     </div>
                     
                     <div>
                         <dt class="text-sm font-medium text-gray-500">Payment Method</dt>
-                        <dd class="text-sm text-gray-900">{{ donation.get_payment_method_display }}</dd>
+                        <dd class="text-base text-gray-900 mt-1">{{ donation.get_payment_method_display }}</dd>
                     </div>
                     
-                    <div>
+                    <div class="col-span-1 sm:col-span-2">
                         <dt class="text-sm font-medium text-gray-500">Transaction ID</dt>
-                        <dd class="text-sm text-gray-900 font-mono">{{ donation.id }}</dd>
+                        <dd class="text-sm text-gray-900 font-mono mt-1">{{ donation.id }}</dd>
                     </div>
                     
-                    <div>
+                    <div class="col-span-1 sm:col-span-2">
                         <dt class="text-sm font-medium text-gray-500">Date</dt>
-                        <dd class="text-sm text-gray-900">{{ donation.completed_at|date:"F d, Y g:i A" }}</dd>
+                        <dd class="text-sm text-gray-900 mt-1">{{ donation.completed_at|date:"F d, Y, g:i A" }}</dd>
                     </div>
                 </div>
                 
                 {% if donation.message %}
-                <div class="mt-4 pt-4 border-t border-gray-200">
-                    <dt class="text-sm font-medium text-gray-500 mb-1">Your Message</dt>
-                    <dd class="text-sm text-gray-900 italic">"{{ donation.message }}"</dd>
+                <div class="mt-6 pt-6 border-t border-gray-300">
+                    <dt class="text-sm font-medium text-gray-500 mb-2">Your Message</dt>
+                    <dd class="text-base text-gray-900 italic">"{{ donation.message }}"</dd>
                 </div>
                 {% endif %}
             </div>
             
-            <!-- Impact Statement -->
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-8">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Your Impact</h3>
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 md:p-8 mb-8 text-left">
+                <h3 class="text-xl font-bold text-[#1A2A80] mb-3">Your Impact</h3>
                 <p class="text-gray-700">
-                    Your generous donation of <strong>R{{ donation.amount }}</strong> brings 
-                    {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} 
-                    <strong>R{{ donation.amount }}</strong> closer to their educational goal!
+                    Your generous donation of <strong class="text-[#2B6D6D]">R{{ donation.amount }}</strong> brings 
+                    <strong>{{ donation.campaign.student.full_name|default:donation.campaign.student.username }}</strong> 
+                    closer to their educational goal!
                 </p>
                 
-                <!-- Updated Progress Bar -->
                 <div class="mt-4">
                     <div class="flex justify-between text-sm text-gray-600 mb-1">
-                        <span>Campaign Progress</span>
+                        <span class="font-medium">Campaign Progress</span>
                         <span>R{{ donation.campaign.current_amount|floatformat:0 }} of R{{ donation.campaign.goal|floatformat:0 }}</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-3">
-                        <div class="bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full transition-all duration-1000" 
+                        <div class="bg-gradient-to-r from-[#5A67D8] to-[#2B6D6D] h-3 rounded-full transition-all duration-1000" 
                              style="width: {{ donation.campaign.progress_percentage }}%"></div>
                     </div>
-                    <p class="text-sm text-gray-600 mt-1">{{ donation.campaign.progress_percentage }}% funded</p>
+                    <p class="text-xs text-gray-500 mt-1">{{ donation.campaign.progress_percentage|floatformat:0 }}% funded</p>
                 </div>
             </div>
             
-            <!-- Receipt Information -->
-            {% if donation.receipt %}
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8">
-                <div class="flex items-center justify-center mb-2">
-                    <i class="fas fa-receipt text-gray-600 mr-2"></i>
-                    <span class="text-sm font-medium text-gray-900">Receipt #{{ donation.receipt.receipt_number }}</span>
-                </div>
-                <p class="text-xs text-gray-600">
-                    A detailed receipt has been sent to your email address. 
-                    Keep this for your tax records.
-                </p>
-            </div>
-            {% endif %}
-            
-            <!-- Next Steps -->
-            <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-gray-900">What happens next?</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                    <div class="flex flex-col items-center p-4 bg-blue-50 rounded-lg">
-                        <i class="fas fa-envelope text-blue-600 text-xl mb-2"></i>
-                        <h4 class="font-medium">Email Confirmation</h4>
-                        <p class="text-gray-600 text-center">You'll receive a confirmation email with your receipt</p>
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-[#1A2A80] mb-6">What happens next?</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div class="flex flex-col items-center p-6 bg-[#E0E7FF] rounded-2xl">
+                        <svg class="w-8 h-8 text-[#3B38A0] mb-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                        <h4 class="font-semibold text-gray-900 mt-1">Email Confirmation</h4>
+                        <p class="text-gray-600 text-center mt-2">You'll receive a confirmation email with your receipt shortly.</p>
                     </div>
-                    <div class="flex flex-col items-center p-4 bg-green-50 rounded-lg">
-                        <i class="fas fa-hand-holding-heart text-green-600 text-xl mb-2"></i>
-                        <h4 class="font-medium">Funds Transferred</h4>
-                        <p class="text-gray-600 text-center">Your donation goes directly to the student</p>
+                    <div class="flex flex-col items-center p-6 bg-[#F0ECFA] rounded-2xl">
+                        <svg class="w-8 h-8 text-[#5A67D8] mb-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                        <h4 class="font-semibold text-gray-900 mt-1">Funds Transferred</h4>
+                        <p class="text-gray-600 text-center mt-2">Your donation goes directly to the student to support their needs.</p>
                     </div>
-                    <div class="flex flex-col items-center p-4 bg-purple-50 rounded-lg">
-                        <i class="fas fa-graduation-cap text-purple-600 text-xl mb-2"></i>
-                        <h4 class="font-medium">Student Notified</h4>
-                        <p class="text-gray-600 text-center">The student will be notified of your support</p>
+                    <div class="flex flex-col items-center p-6 bg-[#EAF6F6] rounded-2xl">
+                        <svg class="w-8 h-8 text-[#2B6D6D] mb-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                        <h4 class="font-semibold text-gray-900 mt-1">Student Notified</h4>
+                        <p class="text-gray-600 text-center mt-2">The student will be notified of your generous support.</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Action Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                 <a href="{% url 'campaign_detail' donation.campaign.id %}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
-                    <i class="fas fa-arrow-left mr-2"></i>Back to Campaign
+                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-full shadow-sm text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    Back to Campaign
                 </a>
                 
                 <a href="{% url 'campaigns_list' %}" 
-                   class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
-                    <i class="fas fa-search mr-2"></i>Find More Campaigns
+                   class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-semibold rounded-full shadow-sm text-white bg-[#2B6D6D] hover:bg-opacity-90 transition-colors duration-200">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    Find More Campaigns
                 </a>
-                
-                <button onclick="shareDonation()" 
-                        class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200">
-                    <i class="fas fa-share mr-2"></i>Share This Campaign
-                </button>
             </div>
-            
-            <!-- Social Sharing -->
+
             <div class="mt-8 pt-8 border-t border-gray-200">
                 <p class="text-sm text-gray-600 mb-4">Help spread the word about this campaign:</p>
                 <div class="flex justify-center space-x-4">
-                    <a href="#" onclick="shareOnFacebook()" class="text-blue-600 hover:text-blue-800">
-                        <i class="fab fa-facebook-f text-xl"></i>
-                    </a>
-                    <a href="#" onclick="shareOnTwitter()" class="text-blue-400 hover:text-blue-600">
-                        <i class="fab fa-twitter text-xl"></i>
-                    </a>
-                    <a href="#" onclick="shareOnLinkedIn()" class="text-blue-700 hover:text-blue-900">
-                        <i class="fab fa-linkedin-in text-xl"></i>
-                    </a>
-                    <a href="#" onclick="shareViaEmail()" class="text-gray-600 hover:text-gray-800">
-                        <i class="fas fa-envelope text-xl"></i>
-                    </a>
+                    <button onclick="shareOnFacebook()" class="text-[#3B5998] hover:text-opacity-80 transition-colors duration-200">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2.075 2-2.075h.927V3.27c-.43-.058-1.72-.165-3.238-.165-3.228 0-5.5 1.767-5.5 5.922V13.5H6v4h2.5V22h4V17.5h3.35l.65-4H14z"></path></svg>
+                    </button>
+                    <button onclick="shareOnTwitter()" class="text-[#1DA1F2] hover:text-opacity-80 transition-colors duration-200">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.37-.83.5-1.75.85-2.72 1.05-.78-.83-1.88-1.35-3.13-1.35-2.36 0-4.28 1.9-4.28 4.25 0 .33.04.66.12.97-3.56-.18-6.72-1.89-8.83-4.48-.37.64-.58 1.39-.58 2.19 0 1.47.74 2.77 1.88 3.53-.69-.02-1.34-.2-1.92-.53v.05c0 2.05 1.46 3.76 3.4 4.15-.36.1-.73.15-1.12.15-.27 0-.54-.03-.79-.08.54 1.68 2.1 2.91 3.96 2.94-1.46 1.14-3.3 1.82-5.3 1.82-.35 0-.7-.02-1.04-.06 1.89 1.21 4.14 1.92 6.6 1.92 7.9 0 12.23-6.55 12.23-12.23 0-.19-.01-.38-.01-.56.84-.61 1.56-1.37 2.14-2.22z"></path></svg>
+                    </button>
+                    <button onclick="shareOnLinkedIn()" class="text-[#0077B5] hover:text-opacity-80 transition-colors duration-200">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4.98 3.5c0 .64-.53 1.15-1.17 1.15-.64 0-1.17-.51-1.17-1.15S3.17 2.35 3.81 2.35c.64 0 1.17.51 1.17 1.15zM2.83 5.9h2.36V22h-2.36V5.9zm4.07 0h2.36v16.1h-2.36V5.9zm8.56 0h2.36V9.3h-.04c.3-.43.83-.88 1.77-1.16C19.8 8.08 21 9.4 21 12.18V22h-2.36V12.18c0-2.36-.63-4.25-2.4-4.25-1.3 0-2.07.89-2.4 1.78v-1.78z"></path></svg>
+                    </button>
+                    <button onclick="shareViaEmail()" class="text-gray-600 hover:text-gray-800 transition-colors duration-200">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M.05 3.52c.2-.5.5-.9 1.1-1.3l.2-.2c.5-.4 1.2-.6 1.9-.7h17.5c.7.1 1.4.3 1.9.7l.2.2c.6.4 1 1.1 1.1 1.6V18c0 .7-.1 1.2-.4 1.7l-.3.3c-.4.4-1 .6-1.6.6H2.9c-.6 0-1.2-.2-1.6-.6l-.3-.3c-.3-.5-.4-1-.4-1.7V3.52zM21 18.2V5.8l-8.4 6.7c-.5.4-1 .6-1.6.6-.5 0-1-.2-1.6-.6L3 5.8v12.4H21zM10.2 12.4l-6.8-5.4V4.9L10.2 10l6.8-5.1v2.1l-6.8 5.4z"></path></svg>
+                    </button>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
 
+<style>
+    @keyframes scale-in {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    .animate-scale-in {
+        animation: scale-in 0.5s ease-out forwards;
+    }
+</style>
+
 <script>
-function shareDonation() {
-    if (navigator.share) {
-        navigator.share({
-            title: 'I just supported {{ donation.campaign.title }}',
-            text: 'Help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} reach their educational goals!',
-            url: window.location.origin + '{% url "campaign_detail" donation.campaign.id %}'
-        });
-    } else {
-        // Fallback for browsers that don't support Web Share API
-        copyToClipboard(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
-        alert('Campaign link copied to clipboard!');
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressBar = document.querySelector('.bg-gradient-to-r');
+        if (progressBar) {
+            const width = progressBar.style.width;
+            progressBar.style.width = '0%';
+            setTimeout(() => {
+                progressBar.style.width = width;
+            }, 800);
+        }
+    });
+
+    function shareOnFacebook() {
+        const url = encodeURIComponent(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
+        const text = encodeURIComponent('I just supported {{ donation.campaign.title }} - Help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} reach their educational goals!');
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
     }
-}
 
-function shareOnFacebook() {
-    const url = encodeURIComponent(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
-    const text = encodeURIComponent('I just supported {{ donation.campaign.title }} - Help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} reach their educational goals!');
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
-}
+    function shareOnTwitter() {
+        const url = encodeURIComponent(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
+        const text = encodeURIComponent('I just supported {{ donation.campaign.title }} on @EduFund! Help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} reach their educational goals! 🎓💙');
+        window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    }
 
-function shareOnTwitter() {
-    const url = encodeURIComponent(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
-    const text = encodeURIComponent('I just supported {{ donation.campaign.title }} on @EduFund! Help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} reach their educational goals! 🎓💙');
-    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
-}
+    function shareOnLinkedIn() {
+        const url = encodeURIComponent(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
+        const title = encodeURIComponent('Supporting Education: {{ donation.campaign.title }}');
+        const summary = encodeURIComponent('I just made a donation to help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} achieve their educational goals. Join me in supporting education!');
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`, '_blank');
+    }
 
-function shareOnLinkedIn() {
-    const url = encodeURIComponent(window.location.origin + '{% url "campaign_detail" donation.campaign.id %}');
-    const title = encodeURIComponent('Supporting Education: {{ donation.campaign.title }}');
-    const summary = encodeURIComponent('I just made a donation to help {{ donation.campaign.student.full_name|default:donation.campaign.student.username }} achieve their educational goals. Join me in supporting education!');
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}&summary=${summary}`, '_blank');
-}
-
-function shareViaEmail() {
-    const subject = encodeURIComponent('Help Support {{ donation.campaign.title }}');
-    const body = encodeURIComponent(`Hi,
-
+    function shareViaEmail() {
+        const subject = encodeURIComponent('Help Support {{ donation.campaign.title }}');
+        const body = encodeURIComponent(`Hi,
+        
 I just made a donation to support {{ donation.campaign.student.full_name|default:donation.campaign.student.username }}'s educational campaign: "{{ donation.campaign.title }}"
-
+        
 You can learn more and make a donation here: ${window.location.origin}{% url "campaign_detail" donation.campaign.id %}
-
+        
 Every contribution, no matter the size, makes a difference in helping students achieve their educational dreams.
-
+        
 Best regards`);
-    
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
-}
-
-function copyToClipboard(text) {
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(text);
-    } else {
-        // Fallback for older browsers
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
+        
+        window.location.href = `mailto:?subject=${subject}&body=${body}`;
     }
-}
-
-// Add some celebration animation
-document.addEventListener('DOMContentLoaded', function() {
-    // Animate the success icon
-    const successIcon = document.querySelector('.text-green-600');
-    if (successIcon) {
-        successIcon.style.transform = 'scale(0)';
-        setTimeout(() => {
-            successIcon.style.transition = 'transform 0.5s ease-out';
-            successIcon.style.transform = 'scale(1)';
-        }, 200);
-    }
-    
-    // Animate the progress bar
-    const progressBar = document.querySelector('.bg-gradient-to-r');
-    if (progressBar) {
-        const width = progressBar.style.width;
-        progressBar.style.width = '0%';
-        setTimeout(() => {
-            progressBar.style.width = width;
-        }, 800);
-    }
-});
 </script>
 {% endblock %}

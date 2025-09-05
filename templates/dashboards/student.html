@@ -4,168 +4,129 @@
 {% block title %}Student Dashboard - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Welcome back, {{ user.full_name|default:user.username }}!</h1>
-        <p class="mt-2 text-gray-600">Manage your campaigns and track your fundraising progress</p>
-    </div>
-
-    <!-- Quick Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Active Campaigns</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ approved_campaigns_count }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+        <div>
+            <h1 class="text-3xl font-bold text-[#1A2A80]">Welcome back, {{ user.full_name|default:user.username }}!</h1>
+            <p class="mt-2 text-gray-600">Manage your campaigns and track your fundraising progress.</p>
         </div>
-
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Raised</dt>
-                            <dd class="text-lg font-medium text-gray-900">R{{ total_raised|floatformat:0 }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Supporters</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ total_supporters }}</dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white overflow-hidden shadow rounded-lg">
-        <div class="p-5">
-            <div class="flex items-center">
-                <div class="flex-shrink-0">
-                    <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                </div>
-                <div class="ml-5 w-0 flex-1">
-                    <dl>
-                        <dt class="text-sm font-medium text-gray-500 truncate">Pending Review</dt>
-                        <dd class="text-lg font-medium text-gray-900">{{ pending_campaigns_count }}</dd>
-                    </dl>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-    <!-- Create Campaign Button -->
-    <div class="mb-8">
-        <a href="{% url 'campaign_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg inline-block">+ Create New Campaign</a>
-    </div>
-
-    {% if not campaigns %}
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <div class="text-center">
-            <h3 class="text-lg font-medium text-blue-900 mb-2">Ready to start fundraising?</h3>
-            <p class="text-blue-700 mb-4">Create your first campaign to begin raising funds for your educational goals.</p>
-            <a href="{% url 'campaign_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Create Your First Campaign
+        <div class="mt-4 sm:mt-0">
+            <a href="{% url 'campaign_create' %}" class="inline-flex items-center px-6 py-2 border border-transparent text-sm font-semibold rounded-full shadow-sm text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+                </svg>
+                Create New Campaign
             </a>
         </div>
     </div>
-    {% endif %}
+
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#E0E7FF] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#3B38A0]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Active Campaigns</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ approved_campaigns_count }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#D1F7E9] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#2E8B57]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Total Raised</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">R{{ total_raised|floatformat:0 }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#FFEFD5] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#F59E0B]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Supporters</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ total_supporters }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#E6E8F2] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#7F8DA7]" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Pending Review</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ pending_campaigns_count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    ---
 
     <!-- My Campaigns -->
-    <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">My Campaigns</h3>
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+        <h3 class="text-lg font-bold text-[#1A2A80] mb-4">My Campaigns</h3>
         
         {% if campaigns %}
             <div class="space-y-4">
                 {% for campaign in campaigns %}
-                <div class="border border-gray-200 rounded-lg p-4">
+                <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-shadow duration-200">
                     <div class="flex justify-between items-start">
-                        <div class="flex-1">
-                            <h4 class="text-lg font-medium text-gray-900">{{ campaign.title }}</h4>
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-lg font-semibold text-gray-900 truncate">{{ campaign.title }}</h4>
                             <p class="text-sm text-gray-500 mt-1">{{ campaign.description|truncatewords:20 }}</p>
-                            <div class="mt-2">
-                                <div class="flex items-center text-sm text-gray-500">
-                                    <span class="mr-4">Goal: R{{ campaign.goal|floatformat:0 }}</span>
-                                    <span class="mr-4">Raised: R{{ campaign.current_amount|floatformat:0 }}</span>
-                                    <span>{{ campaign.progress_percentage }}% Complete</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                                    <div class="bg-blue-600 h-2 rounded-full" style="width: {{ campaign.progress_percentage }}%"></div>
-                                </div>
-                            </div>
                             <p class="text-xs text-gray-400 mt-2">Created on {{ campaign.created_at|date:"M d, Y" }}</p>
                         </div>
-                        <div class="ml-4">
+                        <div class="ml-4 flex-shrink-0">
                             {% if campaign.approved %}
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     ✓ Active
                                 </span>
                             {% else %}
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                     ⏳ Pending Review
                                 </span>
                             {% endif %}
                         </div>
                     </div>
-                    <div class="mt-4 flex space-x-2">
-                        <a href="{% url 'campaign_edit' campaign.id %}" class="text-blue-600 hover:text-blue-500 text-sm font-medium">Edit</a>
-                        <a href="{% url 'campaign_detail' campaign.id %}" class="text-gray-600 hover:text-gray-500 text-sm font-medium">View</a>
-                        <a href="{% url 'campaign_delete' campaign.id %}" class="text-red-600 hover:text-red-500 text-sm font-medium">Delete</a>
+                    
+                    <div class="mt-4">
+                        {% widthratio campaign.current_amount campaign.goal 100 as progress_percent %}
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-[#3B38A0] h-2 rounded-full" style="width: {{ progress_percent }}%"></div>
+                        </div>
+                        <div class="flex items-center justify-between text-sm mt-2">
+                            <span class="font-medium text-gray-900">R{{ campaign.current_amount|floatformat:0 }} raised</span>
+                            <span class="text-gray-500">{{ progress_percent }}%</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex space-x-4">
+                        <a href="{% url 'campaign_edit' campaign.id %}" class="text-sm font-semibold text-[#3B38A0] hover:text-opacity-80 transition-colors duration-200">Edit</a>
+                        <a href="{% url 'campaign_detail' campaign.id %}" class="text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors duration-200">View</a>
+                        <a href="{% url 'campaign_delete' campaign.id %}" class="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors duration-200">Delete</a>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         {% else %}
             <div class="text-center py-8 bg-gray-50 rounded-lg">
-                <div class="mx-auto h-12 w-12 text-gray-400 mb-4">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 48 48">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m-16-4c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252" />
-                    </svg>
-                </div>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No campaigns yet</h3>
+                <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 48 48">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m-16-4c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252" />
+                </svg>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">No campaigns yet</h3>
                 <p class="text-gray-500 mb-4">Create your first fundraising campaign to start raising funds for your education.</p>
-                <a href="{% url 'campaign_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <a href="{% url 'campaign_create' %}" class="inline-flex items-center px-6 py-2 border border-transparent shadow-sm text-sm font-semibold rounded-full text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
                     Create Your First Campaign
                 </a>
             </div>

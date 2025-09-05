@@ -4,19 +4,43 @@
 {% block title %}Create Campaign - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="p-6">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">Create Your Campaign</h1>
-            <p class="text-gray-600 mb-6">Tell your story and start raising funds for your educational goals</p>
-            
-            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                <h3 class="text-sm font-medium text-blue-900 mb-2">💡 Tips for a successful campaign:</h3>
-                <ul class="text-sm text-blue-700 space-y-1">
-                    <li>• Write a compelling title that clearly states your goal</li>
-                    <li>• Tell your personal story and explain why you need funding</li>
-                    <li>• Set a realistic funding goal based on your actual needs</li>
-                    <li>• Add a photo that represents you or your educational journey</li>
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="p-8 md:p-10 bg-gray-50 border-b border-gray-200 flex flex-col md:flex-row items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-extrabold text-[#1A2A80] mb-2">Create Your Campaign</h1>
+                <p class="text-gray-600">Tell your story and start raising funds for your educational goals.</p>
+            </div>
+            <div class="mt-4 md:mt-0 flex-shrink-0">
+                <svg class="h-20 w-20 text-[#5A67D8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <div class="p-8 md:p-10">
+            <div class="bg-[#F0ECFA] border border-[#5A67D8] rounded-2xl p-6 mb-8">
+                <h3 class="flex items-center text-sm font-bold text-[#5A67D8] mb-4">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    Tips for a successful campaign:
+                </h3>
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-[#5A67D8]">
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172 4.172 7.344a2 2 0 00-2.828 2.828l3.65 3.65a2 2 0 002.828 0L17.414 5.414a2 2 0 000-2.828z"></path></svg>
+                        <span>Write a compelling title that clearly states your goal.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172 4.172 7.344a2 2 0 00-2.828 2.828l3.65 3.65a2 2 0 002.828 0L17.414 5.414a2 2 0 000-2.828z"></path></svg>
+                        <span>Set a realistic funding goal based on your actual needs.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172 4.172 7.344a2 2 0 00-2.828 2.828l3.65 3.65a2 2 0 002.828 0L17.414 5.414a2 2 0 000-2.828z"></path></svg>
+                        <span>Tell your personal story and explain why you need funding.</span>
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 mt-1 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172 4.172 7.344a2 2 0 00-2.828 2.828l3.65 3.65a2 2 0 002.828 0L17.414 5.414a2 2 0 000-2.828z"></path></svg>
+                        <span>Add a photo that represents you or your educational journey.</span>
+                    </li>
                 </ul>
             </div>
             
@@ -24,60 +48,63 @@
                 {% csrf_token %}
                 
                 {% if form.errors %}
-                    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-                        <p class="font-bold">Please correct the following errors:</p>
-                        {{ form.errors }}
+                    <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl">
+                        <p class="font-bold mb-1">Please correct the following errors:</p>
+                        {% for field, errors in form.errors.items %}
+                            <p class="text-sm">- {{ errors|join:", " }}</p>
+                        {% endfor %}
                     </div>
                 {% endif %}
                 
                 <div>
-                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                         Campaign Title*
                     </label>
                     {{ form.title }}
-                    <p class="text-xs text-gray-500 mt-1">Choose a clear, descriptive title for your fundraising campaign.</p>
+                    <p class="text-xs text-gray-500 mt-2">Choose a clear, descriptive title for your fundraising campaign.</p>
                 </div>
                 
                 <div>
-                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                         Description*
                     </label>
                     {{ form.description }}
-                    <p class="text-xs text-gray-500 mt-1">
+                    <p class="text-xs text-gray-500 mt-2">
                         Explain your educational goals, why you need funding, and how the funds will be used.
                     </p>
                 </div>
                 
                 <div>
-                    <label for="{{ form.goal.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="{{ form.goal.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                         Funding Goal (R)*
                     </label>
                     {{ form.goal }}
-                    <p class="text-xs text-gray-500 mt-1">Set a realistic funding goal based on your actual needs.</p>
+                    <p class="text-xs text-gray-500 mt-2">Set a realistic funding goal based on your actual needs.</p>
                 </div>
                 
                 <div>
-                    <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
                         Campaign Image
                     </label>
                     {{ form.image }}
-                    <p class="text-xs text-gray-500 mt-1">
+                    <p class="text-xs text-gray-500 mt-2">
                         Upload an image that represents your campaign. This will be displayed on the campaign page.
                     </p>
                 </div>
                 
-                <div class="bg-gray-50 p-4 rounded-md">
-                    <p class="text-sm text-gray-600">
+                <div class="bg-gray-50 p-5 rounded-2xl flex items-start space-x-3 mt-8">
+                    <svg class="w-5 h-5 text-gray-600 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2h2a1 1 0 001-1V9a1 1 0 10-2 0V9z" clip-rule="evenodd"></path></svg>
+                    <p class="text-sm text-gray-700">
                         <strong>Note:</strong> All campaigns require admin approval before they become visible to potential donors. 
                         You will be notified once your campaign is approved.
                     </p>
                 </div>
                 
-                <div class="flex items-center justify-between space-x-3 pt-6 border-t">
-                    <a href="{% url 'student_dashboard' %}" class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-200">
+                <div class="flex items-center justify-between space-x-3 pt-6 border-t border-gray-100">
+                    <a href="{% url 'student_dashboard' %}" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
                         Cancel
                     </a>
-                    <button type="submit" class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                    <button type="submit" class="inline-flex items-center px-6 py-3 border border-transparent rounded-full shadow-sm text-base font-medium text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#3B38A0]">
                         Create Campaign
                     </button>
                 </div>

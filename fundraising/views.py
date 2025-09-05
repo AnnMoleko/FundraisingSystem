@@ -435,7 +435,21 @@ def make_donation(request, campaign_id):
     if request.method == 'POST':
         form = DonationForm(request.POST, campaign=campaign)
         if form.is_valid():
-            # Added security validation check
+            # Create a Donation instance but don't save to the database yet
+            donation = form.save(commit=False)
+            
+            # Manually assign the campaign, donor, and calculated fields
+            donation.campaign = campaign
+            donation.donor = request.user
+            donation.status = 'pending'
+            
+            # Assign other fields from cleaned_data to the donation object
+            donation.message = form.cleaned_data.get('message', '')
+            donation.is_recurring = form.cleaned_data.get('is_recurring', False)
+            donation.anonymous = form.cleaned_data.get('anonymous', False)
+            donation.processing_fee = form.cleaned_data.get('processing_fee', 0)
+            
+            # Store security metadata
             if hasattr(request, 'security_validation'):
                 validation = request.security_validation
                 if validation['fraud_analysis']['requires_review']:
@@ -444,19 +458,8 @@ def make_donation(request, campaign_id):
                         "Your donation has been flagged for manual review. "
                         "You will receive an email confirmation once it's processed."
                     )
-            
-            donation = form.save(commit=False)
-            donation.campaign = campaign
-            donation.donor = request.user
-            donation.status = 'pending'
-            
-            # Calculate processing fee if cover_fees is selected
-            if form.cleaned_data.get('cover_fees'):
-                donation.processing_fee = form.cleaned_data.get('processing_fee', 0)
-            
-            # Store security metadata
-            if hasattr(request, 'security_validation'):
-                metadata = request.security_validation['metadata']
+                
+                metadata = validation['metadata']
                 donation.ip_address = metadata.get('ip_address')
                 donation.user_agent = metadata.get('user_agent')
             

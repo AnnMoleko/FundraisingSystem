@@ -4,57 +4,58 @@
 {% block title %}Profile - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-            <div class="flex items-center space-x-5">
-                <div class="flex-shrink-0">
-                    <img class="h-20 w-20 rounded-full" src="{% static 'images/default-avatar.png' %}" alt="{{ user.full_name }}">
-                </div>
-                <div class="flex-1 min-w-0">
-                    <h1 class="text-2xl font-bold text-gray-900">{{ user.full_name|default:user.username }}</h1>
-                    <p class="text-sm font-medium text-gray-500 capitalize">{{ user.role }}</p>
-                    <p class="text-sm text-gray-500">{{ user.email }}</p>
-                </div>
-                <div>
-                    <button type="button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Edit Profile
-                    </button>
-                </div>
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div class="p-8 md:p-10 border-b border-gray-100 flex items-center space-x-6">
+            <div class="flex-shrink-0">
+                <img class="h-24 w-24 rounded-full border-4 border-white shadow-lg" src="{% static 'images/default-avatar.png' %}" alt="{{ user.full_name|default:user.username }}">
+            </div>
+            <div class="flex-1 min-w-0">
+                <h1 class="text-3xl font-extrabold text-[#1A2A80] mb-1">
+                    {{ user.full_name|default:user.username }}
+                </h1>
+                <p class="text-lg font-medium text-gray-600 capitalize">
+                    {{ user.role }}
+                </p>
+                <p class="text-sm text-gray-500 mt-1">
+                    {{ user.email }}
+                </p>
+            </div>
+            <div class="self-start mt-2">
+                <a href="#" class="inline-flex items-center px-6 py-3 border border-gray-300 rounded-full text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200 shadow-sm">
+                    Edit Profile
+                </a>
             </div>
         </div>
-    </div>
 
-    <!-- Profile Details -->
-    <div class="mt-8 bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Profile Information</h3>
-            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+        <div class="p-8 md:p-10">
+            <h3 class="text-xl font-bold text-gray-800 mb-6">Profile Information</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Full Name</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ user.full_name|default:"Not provided" }}</dd>
+                    <dd class="mt-1 text-base text-gray-900">{{ user.full_name|default:"Not provided" }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Username</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ user.username }}</dd>
+                    <dd class="mt-1 text-base text-gray-900">{{ user.username }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Email</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ user.email }}</dd>
+                    <dd class="mt-1 text-base text-gray-900">{{ user.email }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Role</dt>
-                    <dd class="mt-1 text-sm text-gray-900 capitalize">{{ user.role }}</dd>
+                    <dd class="mt-1 text-base text-gray-900 capitalize">{{ user.role }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Member Since</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ user.date_joined|date:"F d, Y" }}</dd>
+                    <dd class="mt-1 text-base text-gray-900">{{ user.date_joined|date:"F d, Y" }}</dd>
                 </div>
                 <div>
                     <dt class="text-sm font-medium text-gray-500">Last Login</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ user.last_login|date:"F d, Y g:i A"|default:"Never" }}</dd>
+                    <dd class="mt-1 text-base text-gray-900">{{ user.last_login|date:"F d, Y g:i A"|default:"Never" }}</dd>
                 </div>
-            </dl>
+            </div>
         </div>
     </div>
 </div>

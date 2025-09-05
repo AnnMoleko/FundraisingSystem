@@ -4,92 +4,66 @@
 {% block title %}My Donations - EduFund{% endblock %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">My Donation History</h1>
-        <p class="mt-2 text-gray-600">Track your contributions and see the impact you've made</p>
+        <h1 class="text-3xl font-bold text-[#1A2A80]">My Donation History</h1>
+        <p class="mt-2 text-gray-600">Track your contributions and see the impact you've made.</p>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                            <i class="fas fa-dollar-sign text-white"></i>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Donated</dt>
-                            <dd class="text-lg font-medium text-gray-900">R{{ total_donated|floatformat:2 }}</dd>
-                        </dl>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#D1F7E9] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#2E8B57]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-2.485 0-4.5 2.015-4.5 4.5S9.515 17 12 17s4.5-2.015 4.5-4.5S14.485 8 12 8z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 12h-5m5 0a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Total Donated</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">R{{ total_donated|floatformat:2 }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                            <i class="fas fa-graduation-cap text-white"></i>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Students Helped</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ campaigns_supported }}</dd>
-                        </dl>
-                    </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#E0E7FF] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#3B38A0]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a4.996 4.996 0 01-2.91 3.522l-3.25 1.9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.16 10.578l-3.25-1.9a4.996 4.996 0 00-2.91-3.522"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14L5.84 10.578a4.996 4.996 0 01-2.91-3.522"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Students Helped</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ campaigns_supported }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
-                            <i class="fas fa-heart text-white"></i>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Total Donations</dt>
-                            <dd class="text-lg font-medium text-gray-900">{{ total_donations }}</dd>
-                        </dl>
-                    </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#FFEFD5] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#F59E0B]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Total Donations</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">{{ total_donations }}</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-white overflow-hidden shadow rounded-lg">
-            <div class="p-5">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <div class="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                            <i class="fas fa-chart-line text-white"></i>
-                        </div>
-                    </div>
-                    <div class="ml-5 w-0 flex-1">
-                        <dl>
-                            <dt class="text-sm font-medium text-gray-500 truncate">Avg. Donation</dt>
-                            <dd class="text-lg font-medium text-gray-900">R{{ average_donation|floatformat:2 }}</dd>
-                        </dl>
-                    </div>
+        <div class="bg-white rounded-2xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#E6E8F2] rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-[#7F8DA7]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l2-2h6l2 2m-2-2v8m-4-8v8m2-8v8"></path></svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Avg. Donation</p>
+                    <p class="text-2xl font-bold text-[#1A2A80]">R{{ average_donation|floatformat:2 }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Filters -->
-    <div class="bg-white shadow rounded-lg mb-8">
+    <div class="bg-white rounded-2xl shadow-lg mb-8">
         <div class="p-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Filter Donations</h3>
-            <form method="get" class="grid grid-cols-1 md:grid-cols-6 gap-4">
+            <h3 class="text-lg font-bold text-[#1A2A80] mb-4">Filter Donations</h3>
+            <form method="get" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                 <div>
                     {{ search_form.search }}
                 </div>
@@ -105,8 +79,8 @@
                 <div>
                     {{ search_form.max_amount }}
                 </div>
-                <div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <div class="flex items-end">
+                    <button type="submit" class="w-full inline-flex items-center justify-center px-6 py-2 border border-transparent text-sm font-semibold rounded-full shadow-sm text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
                         Filter
                     </button>
                 </div>
@@ -114,106 +88,90 @@
         </div>
     </div>
 
-    <!-- Donations List -->
-    <div class="bg-white shadow rounded-lg">
+    ---
+
+    <div class="bg-white rounded-2xl shadow-lg">
         <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-medium text-gray-900">Your Donations</h3>
+            <h3 class="text-lg font-bold text-[#1A2A80]">Your Donations</h3>
         </div>
         
         {% if donations %}
             <div class="divide-y divide-gray-200">
                 {% for donation in donations %}
-                <div class="p-6 hover:bg-gray-50 transition duration-150">
-                    <div class="flex items-center justify-between">
-                        <div class="flex-1">
-                            <div class="flex items-center space-x-4">
-                                <!-- Status Badge -->
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                    {% if donation.status == 'completed' %}bg-green-100 text-green-800
-                                    {% elif donation.status == 'pending' %}bg-yellow-100 text-yellow-800
-                                    {% elif donation.status == 'failed' %}bg-red-100 text-red-800
-                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
-                                    {{ donation.get_status_display }}
-                                </span>
-                                
-                                <!-- Amount -->
-                                <span class="text-lg font-bold text-gray-900">R{{ donation.amount }}</span>
-                                
-                                <!-- Payment Method -->
-                                <span class="text-sm text-gray-500">
-                                    via {{ donation.get_payment_method_display }}
-                                </span>
-                            </div>
+                <div class="p-6 hover:bg-gray-50 transition duration-150 rounded-lg">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-lg font-semibold text-gray-900 truncate">
+                                <a href="{% url 'campaign_detail' donation.campaign.id %}" class="hover:text-[#3B38A0]">
+                                    {{ donation.campaign.title }}
+                                </a>
+                            </h4>
+                            <p class="text-sm text-gray-600 mt-1">Supporting {{ donation.campaign.student.full_name|default:donation.campaign.student.username }}</p>
                             
-                            <!-- Campaign Info -->
-                            <div class="mt-2">
-                                <h4 class="text-lg font-medium text-gray-900">
-                                    <a href="{% url 'campaign_detail' donation.campaign.id %}" class="hover:text-blue-600">
-                                        {{ donation.campaign.title }}
-                                    </a>
-                                </h4>
-                                <p class="text-sm text-gray-600">
-                                    Supporting {{ donation.campaign.student.full_name|default:donation.campaign.student.username }}
-                                </p>
-                            </div>
-                            
-                            <!-- Message -->
-                            {% if donation.message %}
-                            <div class="mt-2">
-                                <p class="text-sm text-gray-700 italic">"{{ donation.message }}"</p>
-                            </div>
-                            {% endif %}
-                            
-                            <!-- Date and Details -->
-                            <div class="mt-3 flex items-center space-x-4 text-sm text-gray-500">
+                            <div class="mt-4 flex items-center space-x-4 text-sm text-gray-500">
                                 <span>
-                                    <i class="far fa-calendar mr-1"></i>
+                                    <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-4 8h.01M12 16h.01M16 16h.01M18 12a2 2 0 11-4 0a2 2 0 014 0zM5 12a2 2 0 11-4 0a2 2 0 014 0zM19 12a2 2 0 11-4 0a2 2 0 014 0z"></path></svg>
                                     {{ donation.created_at|date:"M d, Y" }}
                                 </span>
                                 
                                 {% if donation.is_recurring %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                                    <i class="fas fa-sync-alt mr-1"></i>
-                                    Recurring {{ donation.recurring_frequency }}
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#E0E7FF] text-[#3B38A0]">
+                                    <svg class="w-3 h-3 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1h1zm0 4h1a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1zM4 10h1a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1a1 1 0 011-1zM4 14h1a1 1 0 011 1v1a1 1 0 01-1 1H4a1 1 0 01-1-1v-1a1 1 0 011-1zM8 6h1a1 1 0 011 1v1a1 1 0 01-1 1H8a1 1 0 01-1-1V7a1 1 0 011-1zM8 10h1a1 1 0 011 1v1a1 1 0 01-1 1H8a1 1 0 01-1-1v-1a1 1 0 011-1zM8 14h1a1 1 0 011 1v1a1 1 0 01-1 1H8a1 1 0 01-1-1v-1a1 1 0 011-1zM12 6h1a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 01-1-1V7a1 1 0 011-1zM12 10h1a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1a1 1 0 011-1zM12 14h1a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1a1 1 0 011-1zM16 6h1a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 01-1-1V7a1 1 0 011-1zM16 10h1a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1a1 1 0 011-1zM16 14h1a1 1 0 011 1v1a1 1 0 01-1 1h-1a1 1 0 01-1-1v-1a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+                                    Recurring
                                 </span>
                                 {% endif %}
                                 
                                 {% if donation.anonymous %}
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800">
-                                    <i class="fas fa-user-secret mr-1"></i>
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                    <svg class="w-3 h-3 inline-block mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
                                     Anonymous
                                 </span>
                                 {% endif %}
                             </div>
                         </div>
                         
-                        <!-- Actions -->
-                        <div class="flex items-center space-x-2">
-                            {% if donation.receipt %}
-                            <a href="{% url 'download_receipt' donation.id %}" 
-                               class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                <i class="fas fa-download mr-1"></i>Receipt
-                            </a>
-                            {% endif %}
-                            
-                            {% if donation.status == 'completed' and donation.can_be_refunded %}
-                            <button onclick="requestRefund('{{ donation.id }}')" 
-                                    class="text-red-600 hover:text-red-800 text-sm font-medium">
-                                <i class="fas fa-undo mr-1"></i>Request Refund
-                            </button>
-                            {% endif %}
-                            
-                            <a href="{% url 'campaign_detail' donation.campaign.id %}" 
-                               class="text-gray-600 hover:text-gray-800 text-sm font-medium">
-                                <i class="fas fa-external-link-alt mr-1"></i>View Campaign
-                            </a>
+                        <div class="flex-shrink-0 text-right">
+                             <div class="flex items-center justify-end">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mr-2
+                                    {% if donation.status == 'completed' %}bg-green-100 text-green-800
+                                    {% elif donation.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                    {% elif donation.status == 'failed' %}bg-red-100 text-red-800
+                                    {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                    {{ donation.get_status_display }}
+                                </span>
+                                <span class="text-xl font-bold text-[#1A2A80]">R{{ donation.amount }}</span>
+                            </div>
+                            <p class="text-sm text-gray-500 mt-1">via {{ donation.get_payment_method_display }}</p>
                         </div>
+                    </div>
+
+                    {% if donation.message %}
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-700 italic border-l-2 border-gray-300 pl-4">"{{ donation.message }}"</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mt-6 flex space-x-4">
+                        {% if donation.receipt %}
+                        <a href="{% url 'download_receipt' donation.id %}" 
+                           class="text-sm font-semibold text-[#3B38A0] hover:text-opacity-80 transition-colors duration-200">
+                            <svg class="w-4 h-4 inline-block mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Receipt
+                        </a>
+                        {% endif %}
+                        
+                        {% if donation.status == 'completed' and donation.can_be_refunded %}
+                        <button onclick="requestRefund('{{ donation.id }}')" 
+                                class="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors duration-200">
+                            <svg class="w-4 h-4 inline-block mr-1 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10a7 7 0 1114 0m-7 0v7a2 2 0 01-2 2H5a2 2 0 01-2-2v-7m7 0a7 7 0 1114 0M10 10l-4 4m0 0l-4-4"></path></svg>
+                            Request Refund
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
             </div>
             
-            <!-- Pagination -->
             {% if is_paginated %}
             <div class="px-6 py-4 border-t border-gray-200">
                 <div class="flex items-center justify-between">
@@ -223,14 +181,14 @@
                     <div class="flex space-x-2">
                         {% if page_obj.has_previous %}
                         <a href="?page={{ page_obj.previous_page_number }}" 
-                           class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                           class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
                             Previous
                         </a>
                         {% endif %}
                         
                         {% if page_obj.has_next %}
                         <a href="?page={{ page_obj.next_page_number }}" 
-                           class="px-3 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                           class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100">
                             Next
                         </a>
                         {% endif %}
@@ -240,12 +198,11 @@
             {% endif %}
             
         {% else %}
-            <div class="p-12 text-center">
-                <i class="fas fa-heart text-gray-400 text-4xl mb-4"></i>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">No donations yet</h3>
-                <p class="text-gray-600 mb-6">Start making a difference by supporting student campaigns</p>
-                <a href="{% url 'campaigns_list' %}" 
-                   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <div class="p-12 text-center bg-gray-50 rounded-lg">
+                <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">No donations yet</h3>
+                <p class="text-gray-600 mb-6">Start making a difference by supporting student campaigns.</p>
+                <a href="{% url 'campaigns_list' %}" class="inline-flex items-center px-6 py-2 border border-transparent shadow-sm text-sm font-semibold rounded-full text-white bg-[#3B38A0] hover:bg-opacity-90 transition-colors duration-200">
                     Browse Campaigns
                 </a>
             </div>
@@ -253,32 +210,31 @@
     </div>
 </div>
 
-<!-- Refund Request Modal -->
 <div id="refundModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden z-50">
     <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
-            <div class="p-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Request Refund</h3>
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full">
+            <div class="p-8">
+                <h3 class="text-lg font-bold text-[#1A2A80] mb-4">Request Refund</h3>
                 <form id="refundForm" method="post">
                     {% csrf_token %}
                     <input type="hidden" id="refundDonationId" name="donation_id">
                     
-                    <div class="mb-4">
+                    <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
                             Reason for refund request
                         </label>
-                        <textarea name="reason" rows="3" required
-                                  class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        <textarea name="reason" rows="4" required
+                                  class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#3B38A0] focus:border-transparent"
                                   placeholder="Please explain why you're requesting a refund..."></textarea>
                     </div>
                     
                     <div class="flex justify-end space-x-3">
                         <button type="button" onclick="closeRefundModal()" 
-                                class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                class="px-6 py-2 border border-gray-300 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors duration-200">
                             Cancel
                         </button>
                         <button type="submit" 
-                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md">
+                                class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-full shadow-sm transition-colors duration-200">
                             Request Refund
                         </button>
                     </div>
